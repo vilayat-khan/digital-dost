@@ -79,7 +79,7 @@ class Post extends Model
             return null;
         }
 
-        return Storage::disk('public')->url($this->featured_image);
+        return asset('storage/app/public/' . $this->featured_image);
     }
     
 }

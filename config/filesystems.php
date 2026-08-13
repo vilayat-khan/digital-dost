@@ -50,7 +50,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => public_path('media'),
-            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/media',
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/public/media',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,

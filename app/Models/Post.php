@@ -69,8 +69,8 @@ class Post extends Model
 
     public function scopePublished($query)
     {
-        return $query->where('status', 'published')
-            ->where('published_at', '<=', now());
+        return $query->where('status', 'published');
+            // ->where('published_at', '<=', now());
     }
 
     public function getFeaturedImageUrlAttribute(): ?string

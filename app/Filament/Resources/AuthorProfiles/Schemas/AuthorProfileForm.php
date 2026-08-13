@@ -14,11 +14,11 @@ class AuthorProfileForm
     {
         return $schema
             ->components([
-                Select::make('user_id')
+               Select::make('user_id')
                     ->label('User')
-                    ->relationship('user', 'name')
-                    ->searchable()
-                    ->preload()
+                    ->options(\App\Models\User::pluck('name', 'id')->toArray())
+                    ->native(true)
+                    ->searchable(false)
                     ->required(),
 
                 TextInput::make('display_name')

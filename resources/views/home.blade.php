@@ -7,7 +7,7 @@
             <div class="grid md:grid-cols-2">
                 <div class="aspect-video md:aspect-auto bg-gray-100 overflow-hidden">
                     @if($featured->featured_image)
-                        <img src="{{  $featured->featured_image_url }}"
+                        <img src="{{  Storage::url($featured->featured_image) }}"
                              alt="{{ $featured->title }}"
                              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     @else

@@ -53,6 +53,7 @@ class PostForm
                                     ->image()
                                     ->disk('public')
                                     ->directory('post-images')
+                                    ->visibility('public')
                                     ->imageEditor()
                                     ->columnSpanFull(),
                             ]),

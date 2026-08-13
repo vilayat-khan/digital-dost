@@ -33,6 +33,7 @@ class AuthorProfileForm
                     ->image()
                     ->disk('public')
                     ->directory('author-avatars')
+                    ->visibility('public')
                     ->imageEditor()
                     ->avatar(),
 

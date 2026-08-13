@@ -15,6 +15,7 @@ class AuthorProfilesTable
         return $table
             ->columns([
                 ImageColumn::make('avatar')
+                    ->disk('public')
                     ->circular(),
 
                 TextColumn::make('display_name')

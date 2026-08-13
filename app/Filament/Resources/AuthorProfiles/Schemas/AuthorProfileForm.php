@@ -19,8 +19,7 @@ class AuthorProfileForm
                     ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
-                    ->required()
-                    ->unique(ignoreRecord: true),
+                    ->required(),
 
                 TextInput::make('display_name')
                     ->required()

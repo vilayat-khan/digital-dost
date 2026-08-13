@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('layouts.app', function ($view) {
+        View::composer('layouts.site', function ($view) {
             $view->with('navCategories', Category::whereNull('parent_id')
                 ->orderBy('sort_order')
                 ->take(6)

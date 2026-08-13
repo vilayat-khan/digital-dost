@@ -30,7 +30,7 @@
                 <span class="text-xl font-bold tracking-tight">Digital Dost</span>
             </a>
             <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
-                @foreach($navCategories as $cat)
+                @foreach(($navCategories ?? collect()) as $cat)
                     <a href="{{ route('category.show', $cat->slug) }}"
                     class="text-gray-600 hover:text-red-600 hover:bg-red-50 transition px-3 py-2 rounded-lg">
                         {{ $cat->name }}

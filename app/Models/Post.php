@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
     use HasFactory;
+
+    protected $appends = ['featured_image_url'];
 
     protected $fillable = [
         'title',
@@ -69,4 +72,14 @@ class Post extends Model
         return $query->where('status', 'published')
             ->where('published_at', '<=', now());
     }
+
+    public function getFeaturedImageUrlAttribute(): ?string
+    {
+        if (!$this->featured_image) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($this->featured_image);
+    }
+    
 }

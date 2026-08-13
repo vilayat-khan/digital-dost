@@ -30,9 +30,9 @@
                 <span class="text-xl font-bold tracking-tight">Digital Dost</span>
             </a>
             <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
-                @foreach(\App\Models\Category::whereNull('parent_id')->orderBy('sort_order')->take(6)->get() as $cat)
+                @foreach($navCategories as $cat)
                     <a href="{{ route('category.show', $cat->slug) }}"
-                       class="text-gray-600 hover:text-red-600 hover:bg-red-50 transition px-3 py-2 rounded-lg">
+                    class="text-gray-600 hover:text-red-600 hover:bg-red-50 transition px-3 py-2 rounded-lg">
                         {{ $cat->name }}
                     </a>
                 @endforeach

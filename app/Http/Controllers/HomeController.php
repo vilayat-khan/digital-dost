@@ -21,13 +21,7 @@ class HomeController extends Controller
                 ->with('author', 'category')
                 ->when($featured, fn($q) => $q->where('id', '!=', $featured->id))
                 ->latest('published_at')
-                ->take(6)
-                ->get();
-
-            $categories = Category::with(['posts' => function ($q) {
-                    $q->published()->with('author')->latest('published_at')->take(4);
-                }])
-                ->whereNull('parent_id')
+                ->take(12)
                 ->get();
 
             $trending = Post::published()
@@ -45,7 +39,7 @@ class HomeController extends Controller
 
             $topCategories = Category::whereNull('parent_id')->get();
 
-            return compact('featured', 'latest', 'categories', 'trending', 'latestReviews', 'topCategories');
+            return compact('featured', 'latest', 'trending', 'latestReviews', 'topCategories');
         });
 
         return view('home', $data);

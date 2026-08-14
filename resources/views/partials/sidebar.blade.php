@@ -1,5 +1,5 @@
 {{-- Trending --}}
-<div class="bg-white rounded-2xl border border-[#E7E5DF] p-5">
+<!-- <div class="bg-white rounded-2xl border border-[#E7E5DF] p-5">
     <span class="eyebrow text-[11px] text-[#DC2626] font-semibold">// TRENDING</span>
     <div class="mt-3">
         @forelse($trending as $post)
@@ -13,6 +13,21 @@
                     <h4 class="text-sm font-semibold line-clamp-2 group-hover:text-[#DC2626]">{{ $post->title }}</h4>
                     <span class="text-[11px] font-mono text-[#14151A]/40">{{ $post->published_at->diffForHumans() }}</span>
                 </div>
+            </a>
+        @empty
+            <p class="text-sm text-[#14151A]/50">No trending posts yet.</p>
+        @endforelse
+    </div>
+</div> -->
+
+{{-- Most Read --}}
+<div class="bg-white rounded-2xl border border-[#E7E5DF] p-5">
+    <span class="eyebrow text-[11px] text-[#DC2626] font-semibold">// MOST READ</span>
+    <div class="mt-3">
+        @forelse($trending as $i => $post)
+            <a href="{{ route('post.show', $post->slug) }}" class="flex gap-3 group border-b border-[#E7E5DF] py-3 last:border-0">
+                <span class="font-mono text-2xl font-extrabold text-[#E7E5DF] leading-none w-6 shrink-0">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                <h4 class="text-sm font-semibold line-clamp-2 group-hover:text-[#DC2626]">{{ $post->title }}</h4>
             </a>
         @empty
             <p class="text-sm text-[#14151A]/50">No trending posts yet.</p>

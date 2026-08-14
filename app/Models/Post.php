@@ -29,6 +29,7 @@ class Post extends Model
         'schema_type',
         'views_count',
         'reading_time',
+        'is_featured',
     ];
 
     protected function casts(): array
@@ -37,6 +38,7 @@ class Post extends Model
             'published_at' => 'datetime',
             'views_count' => 'integer',
             'reading_time' => 'integer',
+            'is_featured' => 'boolean',
         ];
     }
 

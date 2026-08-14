@@ -1,65 +1,104 @@
-@extends('layouts.site')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@yield('title', 'Digital Dost — English Tech News, Reviews & Guides')</title>
+    <meta name="description" content="@yield('meta_description', 'Latest tech news, mobile reviews, AI, robotics, programming guides in English.')">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
 
-@section('content')
-    @if($featured)
-        <a href="{{ route('post.show', $featured->slug) }}"
-           class="group block bg-white rounded-3xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 mb-14">
-            <div class="grid md:grid-cols-2">
-                <div class="aspect-video md:aspect-auto bg-gray-100 overflow-hidden">
-                    @if($featured->featured_image)
-                        <img src="{{  Storage::url($featured->featured_image) }}"
-                             alt="{{ $featured->title }}"
-                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                    @else
-                        <div class="w-full h-full flex items-center justify-center text-gray-400 text-sm">
-                            No image
-                        </div>
-                    @endif
+    {{-- ===== HEADER ===== --}}
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            {{-- Logo --}}
+            <a href="{{ url('/') }}" class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">DD</span>
                 </div>
+                <span class="text-xl font-bold tracking-tight">Digital Dost</span>
+            </a>
 
-                <div class="p-8 md:p-10 flex flex-col justify-center">
-                    <span class="text-xs font-bold tracking-wide text-red-600 uppercase">
-                        {{ $featured->category->name ?? 'General' }}
-                    </span>
-
-                    <h1 class="mt-3 text-3xl font-extrabold leading-tight tracking-tight group-hover:text-red-600 transition-colors">
-                        {{ $featured->title }}
-                    </h1>
-
-                    @if($featured->excerpt)
-                        <p class="mt-4 text-gray-600 leading-relaxed">
-                            {{ $featured->excerpt }}
-                        </p>
-                    @endif
-
-                    <div class="mt-6 flex items-center gap-2 text-sm text-gray-500">
-                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-[10px] font-bold text-gray-600">
-                            {{ strtoupper(substr($featured->author->name ?? 'D', 0, 1)) }}
-                        </div>
-                        <span>{{ $featured->author->name ?? 'Digital Dost' }}</span>
-                        <span class="text-gray-300">&middot;</span>
-                        <span>{{ $featured->published_at?->diffForHumans() ?? 'Just now' }}</span>
+            {{-- Main Navigation with Dropdowns --}}
+            <nav x-data="{ open: null }" class="hidden md:flex items-center gap-1 text-sm font-medium">
+                @foreach(($navCategories ?? collect()) as $cat)
+                    <div class="relative" @mouseenter="open = '{{ $cat->id }}'" @mouseleave="open = null">
+                        <a href="{{ route('category.show', $cat->slug) }}"
+                           class="text-gray-600 hover:text-red-600 hover:bg-red-50 transition px-3 py-2 rounded-lg flex items-center gap-1">
+                            {{ $cat->name }}
+                            @if($cat->children->count())
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            @endif
+                        </a>
+                        @if($cat->children->count())
+                            <div x-show="open === '{{ $cat->id }}'" x-cloak
+                                 class="absolute left-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                                @foreach($cat->children as $child)
+                                    <a href="{{ route('category.show', $child->slug) }}"
+                                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition">
+                                        {{ $child->name }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
+                @endforeach
+            </nav>
+
+            {{-- Search --}}
+            <form action="{{ route('search') }}" method="GET" class="hidden md:flex items-center">
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" name="q" placeholder="Search..."
+                           class="rounded-full pl-9 pr-4 py-2 text-sm bg-gray-100 border-0 focus:outline-none focus:ring-2 focus:ring-red-500 w-56 transition">
                 </div>
-            </div>
-        </a>
-    @endif
-
-    @if($latest->count())
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-extrabold tracking-tight">Latest</h2>
-            <div class="h-1 w-16 bg-red-600 rounded-full"></div>
+            </form>
         </div>
+    </header>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($latest as $post)
-                @include('partials.post-card', ['post' => $post])
+    {{-- ===== MAIN CONTENT ===== --}}
+    <main class="max-w-6xl mx-auto px-4 py-6">
+        {{-- Global horizontal category chips --}}
+        <div class="flex overflow-x-auto gap-4 pb-3 mb-6 border-b border-gray-200">
+            @foreach($topCategories as $cat)
+                <a href="{{ route('category.show', $cat->slug) }}"
+                   class="px-4 py-2 rounded-full bg-gray-100 hover:bg-red-50 hover:text-red-600 text-sm font-medium whitespace-nowrap transition">
+                    {{ $cat->name }}
+                </a>
             @endforeach
         </div>
-    @elseif(!$featured)
-        <div class="bg-white rounded-2xl border border-gray-100 p-8 text-center">
-            <h2 class="text-xl font-bold text-gray-900">No posts yet</h2>
-            <p class="mt-2 text-gray-500">Publish your first one from /admin.</p>
+
+        {{-- Two‑column grid (content + sidebar) --}}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-8">
+                @yield('content')
+            </div>
+            <aside class="lg:col-span-4 space-y-8 sticky top-24">
+                @hasSection('sidebar')
+                    @yield('sidebar')
+                @else
+                    @include('partials.default-sidebar')
+                @endif
+            </aside>
         </div>
-    @endif
-@endsection
+    </main>
+
+    {{-- ===== FOOTER ===== --}}
+    <footer class="border-t border-gray-100 mt-20 py-10 text-center">
+        <p class="text-sm text-gray-500">&copy; {{ date('Y') }} Digital Dost. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

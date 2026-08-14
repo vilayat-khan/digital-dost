@@ -22,10 +22,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('layouts.site', function ($view) {
-            $view->with('navCategories', Category::whereNull('parent_id')
+            $categories = Category::whereNull('parent_id')
+                ->with('children')
                 ->orderBy('sort_order')
-                ->take(6)
-                ->get());
+                ->get();
+
+            $view->with('navCategories', $categories)   // for dropdowns
+                ->with('topCategories', $categories);  // for horizontal chips
         });
     }
 }

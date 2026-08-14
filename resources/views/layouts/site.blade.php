@@ -80,7 +80,7 @@
             @endforeach
         </div>
 
-        {{-- Two‑column grid (content + sidebar) --}}
+        {{-- Two-column grid (content + sidebar) --}}
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div class="lg:col-span-8">
                 @yield('content')

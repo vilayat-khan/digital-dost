@@ -1,53 +1,161 @@
-{{-- Trending --}}
-<div class="bg-white rounded-2xl border border-[#E7E5DF] p-5">
-    <span class="eyebrow text-[11px] text-[#DC2626] font-semibold">// TRENDING</span>
-    <div class="mt-3">
-        @forelse($trending as $post)
-            <a href="{{ route('post.show', $post->slug) }}" class="flex gap-3 group border-b border-[#E7E5DF] py-3 last:border-0">
-                <div class="w-16 h-16 flex-shrink-0 bg-[#F0EEE8] rounded-lg overflow-hidden">
-                    @if($post->featured_image)
-                        <img src="{{ Storage::url($post->featured_image) }}" class="w-full h-full object-cover group-hover:scale-105 transition">
-                    @endif
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h4 class="text-sm font-semibold line-clamp-2 group-hover:text-[#DC2626]">{{ $post->title }}</h4>
-                    <span class="text-[11px] font-mono text-[#14151A]/40">{{ $post->published_at->diffForHumans() }}</span>
-                </div>
-            </a>
-        @empty
-            <p class="text-sm text-[#14151A]/50">No trending posts yet.</p>
-        @endforelse
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@yield('title', 'Digital Dost — AI, Gadgets Reviews & Guides')</title>
+    <meta name="description" content="@yield('meta_description', 'Latest tech news, mobile reviews, AI, robotics, programming guides in English.')">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- TODO: Google AdSense script tag goes here once approved --}}
+    {{-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script> --}}
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background:#FAFAF8; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        [x-cloak] { display: none !important; }
+        .eyebrow { font-family:'JetBrains Mono',monospace; letter-spacing:.04em; }
+    </style>
+</head>
+<body class="text-[#14151A] antialiased">
+
+    {{-- ===== UTILITY BAR ===== --}}
+    <div class="hidden md:block bg-[#14151A] text-[#FAFAF8]">
+        <div class="max-w-6xl mx-auto px-4 py-1.5 flex items-center justify-between text-[11px] font-mono tracking-wide">
+            <span>{{ now()->format('D, d M Y') }}</span>
+            <div class="flex items-center gap-4 text-[#FAFAF8]/70">
+                <a href="#" class="hover:text-[#FAFAF8] transition">YOUTUBE</a>
+                <a href="#" class="hover:text-[#FAFAF8] transition">WHATSAPP</a>
+                <a href="#" class="hover:text-[#FAFAF8] transition">INSTAGRAM</a>
+            </div>
+        </div>
     </div>
-</div>
 
-{{-- Ad slot: sidebar --}}
-<div class="min-h-[250px] flex items-center justify-center bg-[#F0EEE8] border border-dashed border-[#D8D5CC] rounded-xl text-[11px] font-mono text-[#14151A]/40">
-    AD SLOT — 300×250
-</div>
-
-{{-- Latest Reviews --}}
-<div class="bg-white rounded-2xl border border-[#E7E5DF] p-5">
-    <span class="eyebrow text-[11px] text-[#DC2626] font-semibold">// LATEST REVIEWS</span>
-    <div class="mt-3">
-        @forelse($latestReviews as $post)
-            <a href="{{ route('post.show', $post->slug) }}" class="flex items-center gap-3 group border-b border-[#E7E5DF] py-2.5 last:border-0">
-                <span class="text-[10px] font-mono font-semibold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded">REVIEW</span>
-                <span class="text-sm group-hover:text-[#DC2626] line-clamp-1">{{ $post->title }}</span>
+    {{-- ===== HEADER ===== --}}
+    <header class="sticky top-0 z-50 bg-[#FAFAF8]/90 backdrop-blur-md border-b border-[#E7E5DF]">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-6">
+            <a href="{{ url('/') }}" class="flex items-center gap-2.5 shrink-0">
+                <div class="w-9 h-9 bg-[#DC2626] rounded-lg flex items-center justify-center">
+                    <span class="text-white font-extrabold text-sm">DD</span>
+                </div>
+                <span class="text-xl font-extrabold tracking-tight">Digital Dost</span>
             </a>
-        @empty
-            <p class="text-sm text-[#14151A]/50">No reviews yet.</p>
-        @endforelse
-    </div>
-</div>
 
-{{-- Newsletter --}}
-<div class="bg-[#14151A] text-[#FAFAF8] rounded-2xl p-6 text-center">
-    <h3 class="font-bold text-lg">✉️ Stay Updated</h3>
-    <p class="text-sm text-[#FAFAF8]/60 mt-1">Get the latest tech news daily</p>
-    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="mt-4 flex gap-2">
-        @csrf
-        <input type="email" name="email" placeholder="Your email"
-               class="flex-1 rounded-full px-4 py-2 text-sm text-[#14151A] border-0 focus:outline-none focus:ring-2 focus:ring-[#DC2626]">
-        <button class="bg-[#DC2626] text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-red-700 transition">Go</button>
-    </form>
-</div>
+            <nav x-data="{ open: null }" class="hidden lg:flex items-center gap-0.5 text-[13px] font-semibold">
+                @foreach(($navCategories ?? collect()) as $cat)
+                    <div class="relative" @mouseenter="open = '{{ $cat->id }}'" @mouseleave="open = null">
+                        <a href="{{ route('category.show', $cat->slug) }}"
+                           class="text-[#14151A]/70 hover:text-[#DC2626] transition px-3 py-2 rounded-md flex items-center gap-1">
+                            {{ $cat->name }}
+                            @if($cat->children->count())
+                                <svg class="w-3.5 h-3.5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            @endif
+                        </a>
+                        @if($cat->children->count())
+                            <div x-show="open === '{{ $cat->id }}'" x-cloak
+                                 class="absolute left-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-[#E7E5DF] py-2 z-50">
+                                @foreach($cat->children as $child)
+                                    <a href="{{ route('category.show', $child->slug) }}"
+                                       class="block px-4 py-2 text-sm text-[#14151A]/80 hover:bg-[#FAFAF8] hover:text-[#DC2626] transition">
+                                        {{ $child->name }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                @endforeach
+            </nav>
+
+            <form action="{{ route('search') }}" method="GET" class="hidden md:flex items-center shrink-0">
+                <div class="relative">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#14151A]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" name="q" placeholder="Search..."
+                           class="rounded-full pl-9 pr-4 py-2 text-sm bg-[#F0EEE8] border-0 focus:outline-none focus:ring-2 focus:ring-[#DC2626]/50 w-48 lg:w-56 transition">
+                </div>
+            </form>
+        </div>
+    </header>
+
+    {{-- ===== AD SLOT: LEADERBOARD (below header) ===== --}}
+    <div class="max-w-6xl mx-auto px-4 pt-4">
+        <div class="w-full min-h-[90px] flex items-center justify-center bg-[#F0EEE8] border border-dashed border-[#D8D5CC] rounded-lg text-[11px] font-mono text-[#14151A]/40">
+            {{-- AdSense unit: leaderboard / responsive --}}
+            AD SLOT — 728×90
+        </div>
+    </div>
+
+    {{-- ===== MAIN CONTENT WITH SECONDARY NAV ===== --}}
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="flex overflow-x-auto gap-2 pb-3 mb-8 border-b border-[#E7E5DF]">
+            @foreach($topCategories as $cat)
+                <a href="{{ route('category.show', $cat->slug) }}"
+                   class="px-3.5 py-1.5 rounded-full bg-[#F0EEE8] hover:bg-[#DC2626] hover:text-white text-[13px] font-semibold whitespace-nowrap transition">
+                    {{ $cat->name }}
+                </a>
+            @endforeach
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div class="lg:col-span-8">
+                @yield('content')
+            </div>
+            <aside class="lg:col-span-4 space-y-8 lg:sticky lg:top-24 self-start">
+                @hasSection('sidebar')
+                    @yield('sidebar')
+                @else
+                    @include('partials.default-sidebar')
+                @endif
+            </aside>
+        </div>
+    </main>
+
+    {{-- ===== FOOTER ===== --}}
+    <footer class="border-t border-[#E7E5DF] mt-20 bg-[#14151A] text-[#FAFAF8]">
+        <div class="max-w-6xl mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
+            <div class="col-span-2 md:col-span-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-7 h-7 bg-[#DC2626] rounded-md flex items-center justify-center">
+                        <span class="text-white font-extrabold text-xs">DD</span>
+                    </div>
+                    <span class="font-extrabold">Digital Dost</span>
+                </div>
+                <p class="text-[#FAFAF8]/50 text-[13px] leading-relaxed">Tech news, reviews & guides — likha jaata hai simple Hinglish mein.</p>
+            </div>
+            <div>
+                <h4 class="font-mono text-[11px] tracking-wide text-[#FAFAF8]/40 mb-3">EXPLORE</h4>
+                <ul class="space-y-2 text-[#FAFAF8]/70">
+                    <li><a href="#" class="hover:text-white">Mobiles</a></li>
+                    <li><a href="#" class="hover:text-white">Laptops</a></li>
+                    <li><a href="#" class="hover:text-white">AI</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-mono text-[11px] tracking-wide text-[#FAFAF8]/40 mb-3">FOLLOW</h4>
+                <ul class="space-y-2 text-[#FAFAF8]/70">
+                    <li><a href="#" class="hover:text-white">YouTube</a></li>
+                    <li><a href="#" class="hover:text-white">WhatsApp</a></li>
+                    <li><a href="#" class="hover:text-white">Instagram</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-mono text-[11px] tracking-wide text-[#FAFAF8]/40 mb-3">LEGAL</h4>
+                <ul class="space-y-2 text-[#FAFAF8]/70">
+                    <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-white">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-white/10 py-5 text-center text-[12px] text-[#FAFAF8]/40">
+            &copy; {{ date('Y') }} Digital Dost. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

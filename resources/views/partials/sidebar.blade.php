@@ -37,10 +37,10 @@
 <div class="bg-red-50 rounded-2xl p-5 text-center">
     <h3 class="font-bold text-lg">✉️ Stay Updated</h3>
     <p class="text-sm text-gray-600 mt-1">Get the latest tech news daily</p>
-    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="mt-3 flex gap-2">
+    <!-- <form action="{{ route('newsletter.subscribe') }}" method="POST" class="mt-3 flex gap-2">
         @csrf
         <input type="email" name="email" placeholder="Your email"
                class="flex-1 rounded-full px-4 py-2 text-sm border-0 focus:ring-2 focus:ring-red-500">
         <button class="bg-red-600 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-red-700">Go</button>
-    </form>
+    </form> -->
 </div>

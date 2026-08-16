@@ -1,3 +1,4 @@
+<!-- Home Page -->
 @extends('layouts.site')
 
 @section('title', 'Digital Dost — AI, Gadgets Reviews & Guides')

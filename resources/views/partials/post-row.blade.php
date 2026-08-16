@@ -1,3 +1,4 @@
+<!-- Post Row Partial -->
 @php
     $badgeColors = [
         'article' => 'text-blue-700',

@@ -1,3 +1,4 @@
+<!-- Post Card Partial -->
 @php
     $badgeColors = [
         'article' => 'bg-blue-50 text-blue-700',

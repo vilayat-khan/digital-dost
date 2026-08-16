@@ -222,8 +222,8 @@
             <div>
                 <h4 class="font-mono text-[11px] tracking-wide text-[#FAFAF8]/40 mb-3">LEGAL</h4>
                 <ul class="space-y-2 text-[#FAFAF8]/70">
-                    <li><a href="{{ route('page.privacy') ?? '#' }}" class="hover:text-white">Privacy Policy</a></li>
-                    <li><a href="{{ route('page.contact') ?? '#' }}" class="hover:text-white">Contact</a></li>
+                    <li><a href="{{ Route::has('page.privacy') ? route('page.privacy') : '#' }}" class="hover:text-white">Privacy Policy</a></li>
+                    <li><a href="{{ Route::has('page.contact') ? route('page.contact') : '#' }}" class="hover:text-white">Contact</a></li>  
                 </ul>
             </div>
         </div>

@@ -55,7 +55,7 @@
             }, { passive: true });
         </script>
         @endpush
-    @endhasSection
+    @endif
 
     {{-- ===== UTILITY BAR ===== --}}
     <div class="hidden md:block bg-[#14151A] text-[#FAFAF8]">

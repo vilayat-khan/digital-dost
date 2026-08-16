@@ -79,7 +79,7 @@
                 <span class="text-xl font-extrabold tracking-tight">Digital Dost</span>
             </a>
 
-            <nav x-data="{ open: null }" class="hidden lg:flex items-center gap-0.5 text-[13px] font-semibold">
+            <nav x-data="{ open: null }" class="hidden lg:flex items-center gap-0.5 text-[13px] font-semibold overflow-x-auto no-scrollbar min-w-0">
                 @foreach(($navCategories ?? collect()) as $cat)
                     <div class="relative" @mouseenter="open = '{{ $cat->id }}'" @mouseleave="open = null">
                         <a href="{{ route('category.show', $cat->slug) }}"
@@ -163,11 +163,11 @@
     </div>
 
     {{-- ===== MAIN CONTENT ===== --}}
-    <main class="max-w-6xl mx-auto px-4 py-8">
+    <main class="max-w-6xl mx-auto px-4 py-8 lg:pt-10">
         @hasSection('full-width')
             @yield('full-width')
         @else
-            <div class="flex overflow-x-auto no-scrollbar gap-2 pb-3 mb-8 border-b border-[#E7E5DF]">
+            <div class="flex lg:hidden overflow-x-auto no-scrollbar gap-2 pb-3 mb-8 border-b border-[#E7E5DF]">
                 @foreach(($topCategories ?? collect()) as $cat)
                     <a href="{{ route('category.show', $cat->slug) }}"
                        class="px-3.5 py-1.5 rounded-full bg-[#F0EEE8] hover:bg-[#DC2626] hover:text-white text-[13px] font-semibold whitespace-nowrap transition">
@@ -223,7 +223,7 @@
                 <h4 class="font-mono text-[11px] tracking-wide text-[#FAFAF8]/40 mb-3">LEGAL</h4>
                 <ul class="space-y-2 text-[#FAFAF8]/70">
                     <li><a href="{{ Route::has('page.privacy') ? route('page.privacy') : '#' }}" class="hover:text-white">Privacy Policy</a></li>
-                    <li><a href="{{ Route::has('page.contact') ? route('page.contact') : '#' }}" class="hover:text-white">Contact</a></li>  
+                    <li><a href="{{ Route::has('page.contact') ? route('page.contact') : '#' }}" class="hover:text-white">Contact</a></li>
                 </ul>
             </div>
         </div>

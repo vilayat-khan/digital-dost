@@ -93,7 +93,10 @@
                         </a>
                         @if($cat->children->count())
                             <div x-show="open === '{{ $cat->id }}'" x-cloak
-                                 class="absolute left-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-[#E7E5DF] py-2 z-50">
+                                 class="absolute left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-[#E7E5DF] py-2 z-50">
+                                <div class="px-4 pb-1.5 mb-1 border-b border-[#E7E5DF] text-[10px] font-mono text-[#14151A]/40 tracking-wide">
+                                    {{ strtoupper($cat->name) }}
+                                </div>
                                 @foreach($cat->children as $child)
                                     <a href="{{ route('category.show', $child->slug) }}"
                                        class="block px-4 py-2 text-sm text-[#14151A]/80 hover:bg-[#FAFAF8] hover:text-[#DC2626] transition">

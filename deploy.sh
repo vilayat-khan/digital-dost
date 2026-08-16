@@ -8,10 +8,10 @@
 set -e  # koi command fail ho toh script yahi ruk jaye
 
 # -------- CONFIG (apne details daalo) --------
-SSH_USER="ssh -p 65002 u763255146@89.116.133.206"
+SSH_USER="u763255146"
 SSH_HOST="89.116.133.206"  # Hostinger ka IP address, cross-check kar lena
 SSH_PORT="65002"                     # Hostinger ka default SSH port, cross-check kar lena
-REMOTE_PATH="/home/your_user/domains/yellowgreen-goshawk-932708.hostingersite.com/public_html"  # apna actual path daalo
+REMOTE_PATH="/home/u763255146/domains/yellowgreen-goshawk-932708.hostingersite.com/public_html"  # apna actual path daalo
 # ------------------------------------------------
 
 echo "🚀 Deploy shuru ho raha hai..."

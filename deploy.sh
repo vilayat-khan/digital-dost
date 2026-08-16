@@ -7,11 +7,11 @@
 
 set -e  # koi command fail ho toh script yahi ruk jaye
 
-# -------- CONFIG (apne details daalo) --------
+# -------- CONFIG --------
 SSH_USER="u763255146"
-SSH_HOST="89.116.133.206"  # Hostinger ka IP address, cross-check kar lena
-SSH_PORT="65002"                     # Hostinger ka default SSH port, cross-check kar lena
-REMOTE_PATH="/home/u763255146/domains/yellowgreen-goshawk-932708.hostingersite.com/public_html"  # apna actual path daalo
+SSH_HOST="89.116.133.206"
+SSH_PORT="65002"
+REMOTE_PATH="/home/u763255146/domains/yellowgreen-goshawk-932708.hostingersite.com/public_html"
 # ------------------------------------------------
 
 echo "🚀 Deploy shuru ho raha hai..."
@@ -20,11 +20,9 @@ echo "🚀 Deploy shuru ho raha hai..."
 echo "📦 Assets build ho rahe hain (npm run build)..."
 npm run build
 
-# 2. Build folder ko server pe bhejna (rsync = fast, sirf changed files bhejta hai)
+# 2. Build folder ko server pe bhejna (scp = Windows Git Bash mein bhi chalta hai)
 echo "⬆️  public/build ko Hostinger pe upload kiya ja raha hai..."
-rsync -avz -e "ssh -p $SSH_PORT" \
-  ./public/build/ \
-  "$SSH_USER@$SSH_HOST:$REMOTE_PATH/public/build/"
+scp -P "$SSH_PORT" -r ./public/build/. "$SSH_USER@$SSH_HOST:$REMOTE_PATH/public/build/"
 
 # 3. (Optional) Agar code changes bhi hain toh git pull server pe chalao
 echo "🔄 Server pe git pull ho raha hai..."

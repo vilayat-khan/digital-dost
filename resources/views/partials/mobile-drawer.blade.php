@@ -15,7 +15,7 @@
             >
         </form>
 
-        <nav class="mobile-nav" aria-label="Mobile navigation">
+        <!-- <nav class="mobile-nav" aria-label="Mobile navigation">
             <a href="{{ url('/') }}">Home</a>
 
             @foreach(($topCategories ?? collect()) as $category)
@@ -23,6 +23,27 @@
                     {{ $category->name }}
                 </a>
             @endforeach
-        </nav>
+        </nav> -->
+
+        <div class="mobile-menu">
+            <a href="{{ url('/') }}">Home</a>
+
+            @foreach(($topCategories ?? collect()) as $category)
+                @if($category->children->count())
+                    <details>
+                        <summary>{{ $category->name }}</summary>
+                        <div class="mobile-submenu">
+                            <a href="{{ route('category.show', $category->slug) }}">View all {{ $category->name }}</a>
+
+                            @foreach($category->children as $child)
+                                <a href="{{ route('category.show', $child->slug) }}">{{ $child->name }}</a>
+                            @endforeach
+                        </div>
+                    </details>
+                @else
+                    <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}</a>
+                @endif
+            @endforeach
+        </div>
     </aside>
 </div>

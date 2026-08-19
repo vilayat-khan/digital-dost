@@ -316,6 +316,85 @@
         .share-copy.is-copied { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
         .share-native:hover { background: #6b7280; border-color: #6b7280; }
 
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .main-nav > a,
+        .nav-item > a {
+            display: inline-flex;
+            align-items: center;
+            min-height: 44px;
+            font-weight: 600;
+            color: #14151A;
+            text-decoration: none;
+        }
+
+        .nav-item.has-dropdown:hover .nav-dropdown,
+        .nav-item.has-dropdown:focus-within .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            min-width: 260px;
+            padding: 12px;
+            border: 1px solid #E7E5DF;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(8px);
+            transition: 180ms ease;
+            z-index: 50;
+        }
+
+        .dropdown-parent-link {
+            display: block;
+            padding: 10px 12px;
+            font-weight: 700;
+            color: #14151A;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .dropdown-links {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #E7E5DF;
+            display: grid;
+            gap: 4px;
+        }
+
+        .dropdown-links a {
+            display: block;
+            padding: 10px 12px;
+            color: rgba(20,21,26,0.72);
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .dropdown-links a:hover,
+        .dropdown-parent-link:hover {
+            background: #F5F3EE;
+            color: #DC2626;
+        }
+
+        .is-active {
+            color: #DC2626 !important;
+        }
+
         @media (max-width: 640px) {
             .share-btn {
                 width: 40px;

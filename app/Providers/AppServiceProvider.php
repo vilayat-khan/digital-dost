@@ -15,34 +15,6 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    // public function boot(): void
-    // {
-    //     View::composer(['layouts.site', 'partials.sidebar', 'partials.header'], function ($view) {
-    //         $shared = Cache::remember('site_shared_data', 600, function () {
-    //             return [
-    //                 'topCategories' => Category::whereNull('parent_id')
-    //                     ->orderBy('name')
-    //                     ->get(),
-
-    //                 'trending' => Post::published()
-    //                     ->with(['author', 'category'])
-    //                     ->latest('published_at')
-    //                     ->take(5)
-    //                     ->get(),
-
-    //                 'latestReviews' => Post::published()
-    //                     ->where('type', 'review')
-    //                     ->with(['author', 'category'])
-    //                     ->latest('published_at')
-    //                     ->take(4)
-    //                     ->get(),
-    //             ];
-    //         });
-
-    //         $view->with($shared);
-    //     });
-    // }
-
     public function boot(): void
     {
         View::composer(
@@ -52,19 +24,23 @@ class AppServiceProvider extends ServiceProvider
                     return [
                         'topCategories' => Category::query()
                             ->whereNull('parent_id')
+                            ->where('show_on_home', 1)
+                            ->with(['children' => function ($query) {
+                                $query->orderBy('sort_order')->orderBy('name');
+                            }])
                             ->orderBy('sort_order')
                             ->orderBy('name')
                             ->get(),
 
                         'trending' => Post::published()
-                            ->with(['author', 'category'])
+                            ->with(['author.authorProfile', 'category'])
                             ->latest('published_at')
                             ->take(5)
                             ->get(),
 
                         'latestReviews' => Post::published()
                             ->where('type', 'review')
-                            ->with(['author', 'category'])
+                            ->with(['author.authorProfile', 'category'])
                             ->latest('published_at')
                             ->take(4)
                             ->get(),

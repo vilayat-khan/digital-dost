@@ -9,12 +9,33 @@
             <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'is-active' : '' }}">Home</a>
 
             @foreach(($topCategories ?? collect()) as $category)
-                <a
-                    href="{{ route('category.show', $category->slug) }}"
-                    class="{{ request()->routeIs('category.show') && request()->route('slug') === $category->slug ? 'is-active' : '' }}"
-                >
-                    {{ $category->name }}
-                </a>
+                <div class="nav-item has-dropdown">
+                    <a
+                        href="{{ route('category.show', $category->slug) }}"
+                        class="{{ request()->routeIs('category.show') && request()->route('slug') === $category->slug ? 'is-active' : '' }}"
+                    >
+                        {{ $category->name }}
+                    </a>
+
+                    @if($category->children->count())
+                        <div class="nav-dropdown">
+                            <a href="{{ route('category.show', $category->slug) }}" class="dropdown-parent-link">
+                                View all {{ $category->name }}
+                            </a>
+
+                            <div class="dropdown-links">
+                                @foreach($category->children as $child)
+                                    <a
+                                        href="{{ route('category.show', $child->slug) }}"
+                                        class="{{ request()->routeIs('category.show') && request()->route('slug') === $child->slug ? 'is-active' : '' }}"
+                                    >
+                                        {{ $child->name }}
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                </div>
             @endforeach
         </nav>
 

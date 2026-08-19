@@ -9,11 +9,13 @@ class CategoryController extends Controller
 {
     public function show(string $slug)
     {
-        $category = Category::where('slug', $slug)->firstOrFail();
+        $category = Category::with('children')->where('slug', $slug)->firstOrFail();
+
+        $categoryIds = $category->children->pluck('id')->push($category->id);
 
         $posts = Post::published()
-            ->where('category_id', $category->id)
-            ->with(['author', 'category'])
+            ->whereIn('category_id', $categoryIds)
+            ->with(['author.authorProfile', 'category'])
             ->latest('published_at')
             ->paginate(12)
             ->withQueryString();

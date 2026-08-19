@@ -15,10 +15,9 @@ class CategoryController extends Controller
             ->where('category_id', $category->id)
             ->with(['author', 'category'])
             ->latest('published_at')
-            ->paginate(12);
+            ->paginate(12)
+            ->withQueryString();
 
-        $topCategories = Category::whereNull('parent_id')->get();
-
-        return view('category', compact('category', 'posts', 'topCategories'));
+        return view('category', compact('category', 'posts'));
     }
 }

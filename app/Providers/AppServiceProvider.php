@@ -4,31 +4,75 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Category;
+use App\Models\Post;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
+    // public function boot(): void
+    // {
+    //     View::composer(['layouts.site', 'partials.sidebar', 'partials.header'], function ($view) {
+    //         $shared = Cache::remember('site_shared_data', 600, function () {
+    //             return [
+    //                 'topCategories' => Category::whereNull('parent_id')
+    //                     ->orderBy('name')
+    //                     ->get(),
+
+    //                 'trending' => Post::published()
+    //                     ->with(['author', 'category'])
+    //                     ->latest('published_at')
+    //                     ->take(5)
+    //                     ->get(),
+
+    //                 'latestReviews' => Post::published()
+    //                     ->where('type', 'review')
+    //                     ->with(['author', 'category'])
+    //                     ->latest('published_at')
+    //                     ->take(4)
+    //                     ->get(),
+    //             ];
+    //         });
+
+    //         $view->with($shared);
+    //     });
+    // }
+
     public function boot(): void
     {
-        View::composer('layouts.site', function ($view) {
-            $categories = Category::whereNull('parent_id')
-                ->with('children')
-                ->orderBy('sort_order')
-                ->get();
+        View::composer(
+            ['layouts.site', 'partials.header', 'partials.sidebar', 'partials.mobile-drawer'],
+            function ($view) {
+                $shared = Cache::remember('site_shared_data', 600, function () {
+                    return [
+                        'topCategories' => Category::query()
+                            ->whereNull('parent_id')
+                            ->orderBy('sort_order')
+                            ->orderBy('name')
+                            ->get(),
 
-            $view->with('navCategories', $categories)   // for dropdowns
-                ->with('topCategories', $categories);  // for horizontal chips
-        });
+                        'trending' => Post::published()
+                            ->with(['author', 'category'])
+                            ->latest('published_at')
+                            ->take(5)
+                            ->get(),
+
+                        'latestReviews' => Post::published()
+                            ->where('type', 'review')
+                            ->with(['author', 'category'])
+                            ->latest('published_at')
+                            ->take(4)
+                            ->get(),
+                    ];
+                });
+
+                $view->with($shared);
+            }
+        );
     }
 }

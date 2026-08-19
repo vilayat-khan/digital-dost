@@ -8,23 +8,41 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->boolean('is_featured')->default(false);
-            $table->integer('views')->default(0);
+            if (!Schema::hasColumn('posts', 'is_featured')) {
+                $table->boolean('is_featured')->default(false);
+            }
+            if (!Schema::hasColumn('posts', 'views')) {
+                $table->integer('views')->default(0);
+            }
         });
 
         Schema::table('categories', function (Blueprint $table) {
-            $table->boolean('show_on_home')->default(false);
-            $table->integer('sort_order')->default(0);
+            if (!Schema::hasColumn('categories', 'show_on_home')) {
+                $table->boolean('show_on_home')->default(false);
+            }
+            if (!Schema::hasColumn('categories', 'sort_order')) {
+                $table->integer('sort_order')->default(0);
+            }
         });
     }
 
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn(['is_featured', 'views']);
+            if (Schema::hasColumn('posts', 'is_featured')) {
+                $table->dropColumn('is_featured');
+            }
+            if (Schema::hasColumn('posts', 'views')) {
+                $table->dropColumn('views');
+            }
         });
         Schema::table('categories', function (Blueprint $table) {
-            $table->dropColumn(['show_on_home', 'sort_order']);
+            if (Schema::hasColumn('categories', 'show_on_home')) {
+                $table->dropColumn('show_on_home');
+            }
+            if (Schema::hasColumn('categories', 'sort_order')) {
+                $table->dropColumn('sort_order');
+            }
         });
     }
 };

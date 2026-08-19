@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class SearchController extends Controller
 {
@@ -11,17 +12,20 @@ class SearchController extends Controller
     {
         $query = trim((string) $request->get('q'));
 
-        $posts = $query
-            ? Post::published()
+        if ($query !== '') {
+            $posts = Post::published()
                 ->where(function ($q) use ($query) {
                     $q->where('title', 'like', "%{$query}%")
-                      ->orWhere('excerpt', 'like', "%{$query}%")
-                      ->orWhere('content', 'like', "%{$query}%");
+                        ->orWhere('excerpt', 'like', "%{$query}%")
+                        ->orWhere('body', 'like', "%{$query}%");
                 })
                 ->with(['author', 'category'])
                 ->latest('published_at')
                 ->paginate(12)
-            : collect();
+                ->withQueryString();
+        } else {
+            $posts = new LengthAwarePaginator([], 0, 12);
+        }
 
         return view('search', compact('posts', 'query'));
     }

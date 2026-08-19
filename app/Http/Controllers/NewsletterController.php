@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NewsletterSubscriber;
 use Illuminate\Http\Request;
 
 class NewsletterController extends Controller
 {
     public function subscribe(Request $request)
     {
-        $request->validate(['email' => 'required|email']);
+        $validated = $request->validate([
+            'email' => ['required', 'email', 'max:255'],
+        ]);
 
-        // for now just log/store, hook up actual newsletter service later
-        \App\Models\NewsletterSubscriber::firstOrCreate(['email' => $request->email]);
+        NewsletterSubscriber::firstOrCreate([
+            'email' => $validated['email'],
+        ]);
 
         return back()->with('success', 'Subscribed successfully!');
     }

@@ -1,33 +1,15 @@
-<!-- Post Row Partial -->
-@php
-    $badgeColors = [
-        'article' => 'text-blue-700',
-        'review' => 'text-amber-700',
-        'news' => 'text-[#DC2626]',
-        'buying_guide' => 'text-emerald-700',
-        'tutorial' => 'text-purple-700',
-        'comparison' => 'text-pink-700',
-    ];
-@endphp
-
-<a href="{{ route('post.show', $post->slug) }}" class="group flex gap-4 py-4 first:pt-0">
-    <div class="w-28 h-20 sm:w-36 sm:h-24 flex-shrink-0 bg-[#F0EEE8] rounded-lg overflow-hidden">
+<a href="{{ route('post.show', $post->slug) }}" class="group flex gap-4 rounded-[24px] p-3 hover:bg-white hover:shadow-sm transition duration-300">
+    <div class="w-28 h-24 sm:w-36 sm:h-28 rounded-[20px] bg-slate-100 overflow-hidden flex-shrink-0">
         @if($post->featured_image)
-            <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}"
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
         @endif
     </div>
-    <div class="flex-1 min-w-0">
-        <span class="eyebrow text-[10px] font-semibold {{ $badgeColors[$post->type] ?? 'text-gray-600' }}">
-            {{ strtoupper(str_replace('_', ' ', $post->type)) }}
-        </span>
-        <h3 class="mt-1 font-bold text-[15px] sm:text-base leading-snug line-clamp-2 group-hover:text-[#DC2626] transition-colors">
-            {{ $post->title }}
-        </h3>
-        <div class="mt-1.5 flex items-center gap-1.5 text-[11px] font-mono text-[#14151A]/45">
-            <span>{{ $post->author->name ?? 'Digital Dost' }}</span>
-            <span>·</span>
-            <span>{{ $post->published_at?->diffForHumans() }}</span>
-        </div>
+    <div class="min-w-0 flex-1">
+        <div class="text-[11px] font-mono uppercase tracking-[0.18em] text-red-600">{{ strtoupper(optional($post->category)->name ?? $post->type ?? 'News') }}</div>
+        <h3 class="mt-2 text-[15px] sm:text-[17px] font-bold leading-snug text-slate-950 group-hover:text-red-600 transition line-clamp-2">{{ $post->title }}</h3>
+        @if($post->excerpt)
+            <p class="mt-2 text-sm text-slate-600 line-clamp-2">{{ $post->excerpt }}</p>
+        @endif
+        <div class="mt-3 text-[11px] font-mono uppercase tracking-[0.14em] text-slate-400">{{ optional($post->author)->name ?? 'Digital Dost' }} · {{ $post->published_at?->diffForHumans() }}</div>
     </div>
 </a>

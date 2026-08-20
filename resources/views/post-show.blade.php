@@ -32,7 +32,7 @@
     |--------------------------------------------------------------------------
     */
 
-    $authorName = {{ optional($post->author)->display_name ?? 'Digital Dost' }}
+    $authorName = optional($post->author)->display_name ?? 'Digital Dost';
 
     $authorProfileUrl = optional($post->author)->slug
         ? route('author.show', $post->author->slug)

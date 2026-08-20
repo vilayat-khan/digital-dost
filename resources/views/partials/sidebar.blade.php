@@ -62,8 +62,8 @@
             @enderror
 
             <button type="submit" class="btn btn-primary">Subscribe</button>
-        </form>
-    </section>
+        </form> 
+    </section> 
 
     <!-- <section class="card" style="padding:20px;">
         <div class="eyebrow" style="font-size:.72rem; color:var(--color-primary); font-weight:800;">Newsletter</div>

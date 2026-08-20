@@ -18,3 +18,4 @@ Route::get('/post/{slug}', [PostController::class, 'show'])->name('post.show');
 
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');

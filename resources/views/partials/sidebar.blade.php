@@ -32,21 +32,13 @@
         <p class="muted" style="margin:0 0 12px;">Weekly updates on AI, gadgets, apps and buying advice.</p>
 
         @if (session('newsletter_success'))
-            <div
-                role="status"
-                aria-live="polite"
-                style="margin:0 0 12px; padding:10px 12px; border-radius:12px; background:#ecfdf5; color:#166534; border:1px solid #bbf7d0; font-size:.92rem;"
-            >
+            <div style="margin:0 0 12px; padding:10px 12px; border-radius:12px; background:#ecfdf5; color:#166534; border:1px solid #bbf7d0; font-size:.92rem;">
                 {{ session('newsletter_success') }}
             </div>
         @endif
 
         @if (session('newsletter_error'))
-            <div
-                role="alert"
-                aria-live="assertive"
-                style="margin:0 0 12px; padding:10px 12px; border-radius:12px; background:#fef2f2; color:#991b1b; border:1px solid #fecaca; font-size:.92rem;"
-            >
+            <div style="margin:0 0 12px; padding:10px 12px; border-radius:12px; background:#fef2f2; color:#991b1b; border:1px solid #fecaca; font-size:.92rem;">
                 {{ session('newsletter_error') }}
             </div>
         @endif
@@ -54,29 +46,20 @@
         <form action="{{ route('newsletter.subscribe') }}" method="POST" style="display:grid; gap:10px;">
             @csrf
 
-            <div style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;" aria-hidden="true">
-                <label for="website">Website</label>
-                <input type="text" name="website" id="website" tabindex="-1" autocomplete="off">
-            </div>
+            <input
+                type="email"
+                name="email"
+                value="{{ old('email') }}"
+                placeholder="Enter your email"
+                required
+                style="height:46px; border:1px solid var(--color-border); background:var(--color-bg); border-radius:14px; padding:0 14px;"
+            >
 
-            <div>
-                <input
-                    type="email"
-                    name="email"
-                    value="{{ old('email') }}"
-                    placeholder="Enter your email"
-                    required
-                    aria-label="Email address"
-                    aria-invalid="{{ $errors->has('email') ? 'true' : 'false' }}"
-                    style="width:100%; height:46px; border:1px solid var(--color-border); background:var(--color-bg); border-radius:14px; padding:0 14px;"
-                >
-
-                @error('email')
-                    <div style="margin-top:8px; color:#b91c1c; font-size:.88rem;">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
+            @error('email')
+                <div style="margin-top:-4px; color:#b91c1c; font-size:.88rem;">
+                    {{ $message }}
+                </div>
+            @enderror
 
             <button type="submit" class="btn btn-primary">Subscribe</button>
         </form>

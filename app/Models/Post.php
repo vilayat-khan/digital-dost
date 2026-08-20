@@ -44,19 +44,7 @@ class Post extends Model
 
     public function author()
     {
-        return $this->belongsTo(User::class, 'author_id');
-    }
-
-    public function authorProfile()
-    {
-        return $this->hasOneThrough(
-            AuthorProfile::class,
-            User::class,
-            'id',        // FK on users table
-            'user_id',    // FK on author_profiles table
-            'author_id',  // local key on posts table
-            'id'          // local key on users table
-        );
+        return $this->belongsTo(AuthorProfile::class, 'author_id');
     }
 
     public function category()
@@ -81,7 +69,9 @@ class Post extends Model
             return null;
         }
 
-         return asset('storage/app/public/' . $this->featured_image);
+        return Storage::url($this->featured_image);
+
+        // return asset('storage/app/public/' . $this->featured_image);
     }
     
 }

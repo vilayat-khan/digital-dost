@@ -2,7 +2,7 @@
 
 @section('title', '#' . $tag->name . ' — Digital Dost')
 @section('meta_description', 'Posts tagged with ' . $tag->name . ' on Digital Dost.')
-
+@section('canonical', route('tag.show', $tag->slug))
 @section('full-width')
 <div class="container">
     <section style="padding:8px 0 28px;">

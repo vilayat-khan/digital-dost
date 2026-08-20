@@ -3,21 +3,36 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>@yield('title', 'Digital Dost')</title>
     <meta name="description" content="@yield('meta_description', 'Latest tech news, reviews, AI, gadgets and buying guides.')">
-    <link rel="canonical" href="{{ url()->current() }}">
+    <meta name="robots" content="@yield('robots', 'index,follow')">
+
+    @php
+        $canonical = trim($__env->yieldContent('canonical', url()->current()));
+        $defaultTitle = trim($__env->yieldContent('title', 'Digital Dost'));
+        $defaultDescription = trim($__env->yieldContent('meta_description', 'Latest tech news, reviews, AI, gadgets and buying guides.'));
+        $defaultOgImage = trim($__env->yieldContent('og_image', asset('images/og-default.jpg')));
+    @endphp
+
+    <link rel="canonical" href="{{ $canonical }}">
 
     <meta property="og:site_name" content="Digital Dost">
-    <meta property="og:title" content="@yield('og_title', trim($__env->yieldContent('title', 'Digital Dost')))">
-    <meta property="og:description" content="@yield('meta_description', 'Latest tech news, reviews, AI, gadgets and buying guides.')">
+    <meta property="og:locale" content="en_IN">
     <meta property="og:type" content="@yield('og_type', 'website')">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="@yield('og_image', asset('images/og-default.jpg'))">
+    <meta property="og:title" content="@yield('og_title', $defaultTitle)">
+    <meta property="og:description" content="@yield('og_description', $defaultDescription)">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:image" content="{{ $defaultOgImage }}">
+    <meta property="og:image:alt" content="@yield('og_image_alt', $defaultTitle)">
+    <meta property="og:image:width" content="@yield('og_image_width', '1200')">
+    <meta property="og:image:height" content="@yield('og_image_height', '630')">
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('og_title', trim($__env->yieldContent('title', 'Digital Dost')))">
-    <meta name="twitter:description" content="@yield('meta_description', 'Latest tech news, reviews, AI, gadgets and buying guides.')">
-    <meta name="twitter:image" content="@yield('og_image', asset('images/og-default.jpg'))">
+    <meta name="twitter:card" content="@yield('twitter_card', 'summary_large_image')">
+    <meta name="twitter:title" content="@yield('twitter_title', $defaultTitle)">
+    <meta name="twitter:description" content="@yield('twitter_description', $defaultDescription)">
+    <meta name="twitter:image" content="@yield('twitter_image', $defaultOgImage)">
+    <meta name="twitter:image:alt" content="@yield('twitter_image_alt', $defaultTitle)">
 
     <link rel="preconnect" href="https://api.fontshare.com">
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=boska@400,700&display=swap" rel="stylesheet">

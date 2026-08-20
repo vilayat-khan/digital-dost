@@ -1,5 +1,5 @@
 @extends('layouts.site')
-
+@section('canonical', url('/'))
 @section('title', 'Digital Dost — AI, Gadgets Reviews & Guides')
 @section('meta_description', 'Latest tech news, reviews, AI, robotics, mobile coverage, software guides and buying advice.')
 @section('og_title', 'Digital Dost — AI, Gadgets Reviews & Guides')

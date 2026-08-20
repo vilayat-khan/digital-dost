@@ -91,7 +91,7 @@ class PostForm
 
                                 Select::make('author_id')
                                     ->label('Author')
-                                    ->relationship('author', 'name')
+                                    ->relationship('author', 'display_name')
                                     ->searchable()
                                     ->preload()
                                     ->required(),

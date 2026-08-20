@@ -33,14 +33,14 @@ class AppServiceProvider extends ServiceProvider
                             ->get(),
 
                         'trending' => Post::published()
-                            ->with(['author.authorProfile', 'category'])
+                            ->with(['author', 'category'])
                             ->latest('published_at')
                             ->take(5)
                             ->get(),
 
                         'latestReviews' => Post::published()
                             ->where('type', 'review')
-                            ->with(['author.authorProfile', 'category'])
+                            ->with(['author', 'category'])
                             ->latest('published_at')
                             ->take(4)
                             ->get(),

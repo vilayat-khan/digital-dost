@@ -2,7 +2,7 @@
 
 @section('title', $category->name . ' — Digital Dost')
 @section('meta_description', 'Latest posts in ' . $category->name . ' on Digital Dost.')
-
+@section('canonical', route('category.show', $category->slug))
 @section('full-width')
 <div class="container">
     <section style="padding:8px 0 28px;">

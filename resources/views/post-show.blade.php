@@ -1,19 +1,51 @@
 @extends('layouts.site')
 
-@section('title', $post->title . ' — Digital Dost')
-@section('meta_description', $post->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($post->body), 155))
-@section('og_type', 'article')
-@section('og_title', $post->title)
-@section('og_image', $post->featured_image ? Storage::url($post->featured_image) : asset('images/og-default.jpg'))
-
 @php
-    $schemaType = $post->type === 'news' ? 'NewsArticle' : 'BlogPosting';
-    $schemaDescription = $post->excerpt ?? \Illuminate\Support\Str::limit(strip_tags($post->body), 155);
-    $schemaImage = $post->featured_image ? Storage::url($post->featured_image) : asset('images/og-default.jpg');
-    $schemaAuthor = optional($post->author)->name ?? 'Digital Dost';
-    $schemaPublished = optional($post->published_at)?->toIso8601String();
-    $schemaUpdated = optional($post->updated_at)?->toIso8601String();
-    $schemaUrl = url()->current();
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Str;
+
+    /*
+    |--------------------------------------------------------------------------
+    | SEO values
+    |--------------------------------------------------------------------------
+    */
+
+    $canonicalUrl = $post->canonical_url
+        ?: route('post.show', $post->slug);
+
+    $seoTitle = $post->meta_title
+        ?: $post->title;
+
+    $seoDescription = $post->meta_description
+        ?: ($post->excerpt ?: Str::limit(strip_tags($post->body), 155));
+
+    $featuredImageUrl = $post->featured_image
+        ? url(Storage::url($post->featured_image))
+        : asset('images/og-default.jpg');
+
+    $schemaType = $post->schema_type
+        ?: ($post->type === 'news' ? 'NewsArticle' : 'BlogPosting');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Author and dates
+    |--------------------------------------------------------------------------
+    */
+
+    $authorName = {{ optional($post->author)->display_name ?? 'Digital Dost' }}
+
+    $authorProfileUrl = optional($post->author)->slug
+        ? route('author.show', $post->author->slug)
+        : url('/');
+
+    $publishedAt = optional($post->published_at)?->toIso8601String();
+    $updatedAt = optional($post->updated_at)?->toIso8601String();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Page UI values
+    |--------------------------------------------------------------------------
+    */
 
     $badgeColors = [
         'article' => 'background:#eff6ff;color:#1d4ed8;',
@@ -24,52 +56,122 @@
         'comparison' => 'background:#fdf2f8;color:#be185d;',
     ];
 
-    $readMins = max(1, round(str_word_count(strip_tags($post->body)) / 200));
-    $hasReviewBox = $post->type === 'review' && !empty($post->rating);
-    $hasProsCons = !empty($post->pros) || !empty($post->cons);
+    $readMins = max(
+        1,
+        round(str_word_count(strip_tags($post->body)) / 200)
+    );
+
+    $hasReviewBox = $post->type === 'review'
+        && !empty($post->rating);
+
+    $hasProsCons = !empty($post->pros)
+        || !empty($post->cons);
 @endphp
 
+@section('canonical', $canonicalUrl)
+
+@section('title', $seoTitle . ' — Digital Dost')
+
+@section('meta_description', $seoDescription)
+
+@section('og_type', 'article')
+@section('og_title', $seoTitle)
+@section('og_description', $seoDescription)
+@section('og_image', $featuredImageUrl)
+@section('og_image_alt', $post->title)
+
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', $seoTitle)
+@section('twitter_description', $seoDescription)
+@section('twitter_image', $featuredImageUrl)
+@section('twitter_image_alt', $post->title)
+
 @push('head')
+
+{{-- Article Open Graph metadata --}}
+@if($publishedAt)
+    <meta property="article:published_time" content="{{ $publishedAt }}">
+@endif
+
+@if($updatedAt)
+    <meta property="article:modified_time" content="{{ $updatedAt }}">
+@endif
+
+<meta property="article:author" content="{{ $authorName }}">
+
+@if(optional($post->category)->name)
+    <meta property="article:section" content="{{ $post->category->name }}">
+@endif
+
+@foreach($post->tags->take(5) as $tag)
+    <meta property="article:tag" content="{{ $tag->name }}">
+@endforeach
+
+{{-- Article structured data --}}
 <script type="application/ld+json">
 {!! json_encode([
     '@context' => 'https://schema.org',
     '@type' => $schemaType,
-    'headline' => $post->title,
-    'description' => $schemaDescription,
-    'image' => [$schemaImage],
-    'datePublished' => $schemaPublished,
-    'dateModified' => $schemaUpdated,
-    'author' => [
-        '@type' => 'Person',
-        'name' => $schemaAuthor,
-    ],
+
     'mainEntityOfPage' => [
         '@type' => 'WebPage',
-        '@id' => $schemaUrl,
+        '@id' => $canonicalUrl,
     ],
+
+    'headline' => $seoTitle,
+    'description' => $seoDescription,
+    'image' => [
+        $featuredImageUrl,
+    ],
+
+    'author' => [
+        '@type' => 'Person',
+        'name' => $authorName,
+        'url' => $authorProfileUrl,
+    ],
+
     'publisher' => [
         '@type' => 'Organization',
         'name' => 'Digital Dost',
+        'logo' => [
+            '@type' => 'ImageObject',
+            'url' => asset('images/logo.png'),
+        ],
     ],
+
+    'datePublished' => $publishedAt,
+    'dateModified' => $updatedAt,
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
 </script>
 
+{{-- Review structured data --}}
 @if($post->type === 'review' && !empty($post->rating))
 <script type="application/ld+json">
 {!! json_encode([
     '@context' => 'https://schema.org',
     '@type' => 'Review',
-    'headline' => $post->title,
+
+    'name' => $seoTitle,
+    'headline' => $seoTitle,
+    'description' => $seoDescription,
+
+    'url' => $canonicalUrl,
+
     'author' => [
         '@type' => 'Person',
-        'name' => $schemaAuthor,
+        'name' => $authorName,
+        'url' => $authorProfileUrl,
     ],
-    'datePublished' => $schemaPublished,
+
+    'datePublished' => $publishedAt,
+
     'reviewRating' => [
         '@type' => 'Rating',
-        'ratingValue' => number_format($post->rating, 1),
+        'ratingValue' => number_format((float) $post->rating, 1, '.', ''),
         'bestRating' => '10',
+        'worstRating' => '1',
     ],
+
     'itemReviewed' => [
         '@type' => 'Product',
         'name' => $post->title,
@@ -79,35 +181,99 @@
 @endif
 
 <style>
-    .article-layout { display:grid; grid-template-columns:1fr; gap:32px; }
-    .article-prose { font-size:1.06rem; line-height:1.8; color:var(--color-text); }
-    .article-prose h2 { font-family:'Boska', serif; font-size:clamp(1.6rem, 2vw, 2.2rem); line-height:1.15; margin:2.2em 0 .65em; scroll-margin-top:110px; }
-    .article-prose h3 { font-size:1.22rem; font-weight:800; line-height:1.25; margin:1.7em 0 .65em; scroll-margin-top:110px; }
-    .article-prose p { margin:0 0 1.2em; max-width:72ch; }
-    .article-prose a { color:var(--color-primary); text-decoration:underline; text-underline-offset:3px; }
-    .article-prose ul, .article-prose ol { margin:0 0 1.2em 1.2rem; }
-    .article-prose li { margin:0 0 .5em; }
+    .article-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .article-prose {
+        font-size: 1.06rem;
+        line-height: 1.8;
+        color: var(--color-text);
+    }
+
+    .article-prose h2 {
+        font-family: 'Boska', serif;
+        font-size: clamp(1.6rem, 2vw, 2.2rem);
+        line-height: 1.15;
+        margin: 2.2em 0 .65em;
+        scroll-margin-top: 110px;
+    }
+
+    .article-prose h3 {
+        font-size: 1.22rem;
+        font-weight: 800;
+        line-height: 1.25;
+        margin: 1.7em 0 .65em;
+        scroll-margin-top: 110px;
+    }
+
+    .article-prose p {
+        margin: 0 0 1.2em;
+        max-width: 72ch;
+    }
+
+    .article-prose a {
+        color: var(--color-primary);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .article-prose ul,
+    .article-prose ol {
+        margin: 0 0 1.2em 1.2rem;
+    }
+
+    .article-prose li {
+        margin: 0 0 .5em;
+    }
+
     .article-prose blockquote {
-        margin:1.4em 0;
-        padding:1em 1.2em;
-        border-left:3px solid var(--color-primary);
-        background:var(--color-surface);
-        border-radius:0 14px 14px 0;
-        color:var(--color-text-muted);
+        margin: 1.4em 0;
+        padding: 1em 1.2em;
+        border-left: 3px solid var(--color-primary);
+        background: var(--color-surface);
+        border-radius: 0 14px 14px 0;
+        color: var(--color-text-muted);
     }
+
     .article-prose img {
-        margin:1.8em 0;
-        border-radius:18px;
-        border:1px solid var(--color-border);
+        margin: 1.8em 0;
+        border-radius: 18px;
+        border: 1px solid var(--color-border);
     }
-    .article-prose table { width:100%; border-collapse:collapse; margin:1.5em 0; }
-    .article-prose th, .article-prose td { border:1px solid var(--color-border); padding:.75rem; text-align:left; }
-    .article-prose th { background:var(--color-surface-2); }
-    .toc-link.active { color:var(--color-primary); font-weight:800; }
+
+    .article-prose table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5em 0;
+    }
+
+    .article-prose th,
+    .article-prose td {
+        border: 1px solid var(--color-border);
+        padding: .75rem;
+        text-align: left;
+    }
+
+    .article-prose th {
+        background: var(--color-surface-2);
+    }
+
+    .toc-link.active {
+        color: var(--color-primary);
+        font-weight: 800;
+    }
+
     @media (min-width: 1024px) {
-        .article-layout { grid-template-columns:minmax(0, 1.7fr) 320px; align-items:start; }
+        .article-layout {
+            grid-template-columns: minmax(0, 1.7fr) 320px;
+            align-items: start;
+        }
     }
 </style>
+
 @endpush
 
 @section('full-width')

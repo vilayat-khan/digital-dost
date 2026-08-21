@@ -9,11 +9,20 @@ class AuthorController extends Controller
 {
     public function show(AuthorProfile $authorProfile)
     {
-        $posts = Post::with(['category', 'author'])
+        $authorProfile->loadCount([
+            'posts' => fn ($q) => $q->published(),
+        ]);
+
+        $posts = Post::published()
+            ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type')
             ->where('author_id', $authorProfile->id)
-            ->where('status', 'published')
+            ->with([
+                'author:id,display_name,slug,avatar',
+                'category:id,name,slug',
+            ])
             ->latest('published_at')
-            ->paginate(12);
+            ->paginate(12)
+            ->withQueryString();
 
         return view('author-show', [
             'author' => $authorProfile,

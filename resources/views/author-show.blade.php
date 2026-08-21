@@ -64,9 +64,9 @@
             <div>
                 <h1 style="margin:0;">{{ $authorName }}</h1>
 
-                @if($author->designation)
-                    <div class="muted" style="margin-top:6px;">{{ $author->designation }}</div>
-                @endif
+                <div class="muted" style="margin-top:6px;">
+                    {{ $author->designation ?: 'Author' }} · {{ $author->posts_count }} articles
+                </div>
 
                 @if($author->bio)
                     <p class="muted" style="margin-top:8px;">{{ $author->bio }}</p>

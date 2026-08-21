@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    RewriteRule ^$ public/index.php [L]
+    RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+
+    RewriteRule (^\.|/\.) - [F]
+
+    <Files .env>
+        Require all denied
+    </Files>
+</IfModule>

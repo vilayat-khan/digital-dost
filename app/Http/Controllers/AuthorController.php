@@ -10,7 +10,7 @@ class AuthorController extends Controller
     public function show(AuthorProfile $author)
     {
         $author->loadCount([
-            'posts' => fn ($q) => $q->published(),
+            'posts' => fn ($q) => $q->where('status', 'published'),
         ]);
 
         $posts = Post::published()

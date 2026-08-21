@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\View\Composers\SiteSidebarComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use App\Http\View\Composers\SiteSidebarComposer;
 
 class ViewServiceProvider extends ServiceProvider
 {

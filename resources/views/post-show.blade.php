@@ -433,6 +433,14 @@
                 {!! $post->body !!}
             </article>
 
+            @if(in_array($post->type, ['review', 'buying_guide', 'comparison']))
+                <div class="card" style="padding:14px 16px; margin-top:20px; background:var(--color-surface-2);">
+                    <p class="muted" style="margin:0; font-size:.9rem;">
+                        Disclosure: Some links on this page may be affiliate links, which means we may earn a commission at no extra cost to you.
+                    </p>
+                </div>
+            @endif
+
             @if($post->tags->count())
                 <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:22px;">
                     @foreach($post->tags as $tag)

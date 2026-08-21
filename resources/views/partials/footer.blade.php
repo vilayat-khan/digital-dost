@@ -31,12 +31,25 @@
             </div>
 
             <div>
-                <h4 style="margin-bottom:10px; font-size:.95rem;">Legal</h4>
+                <div style="font-weight:700; margin-bottom:12px;">Company</div>
                 <div style="display:grid; gap:8px;">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Contact</a>
+                    <a href="{{ route('about') }}">About</a>
+                    <a href="{{ route('contact') }}">Contact</a>
+                    <a href="{{ route('editorial') }}">Editorial Policy</a>
                 </div>
             </div>
+
+            <div>
+                <div style="font-weight:700; margin-bottom:12px;">Legal</div>
+                <div style="display:grid; gap:8px;">
+                    <a href="{{ route('privacy') }}">Privacy Policy</a>
+                    <a href="{{ route('terms') }}">Terms of Use</a>
+                    <a href="{{ route('disclaimer') }}">Disclaimer</a>
+                    <a href="{{ route('cookies') }}">Cookie Policy</a>
+                    <a href="{{ route('affiliate') }}">Affiliate Disclosure</a>
+                </div>
+            </div>
+            
         </div>
 
         <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--color-border); color:var(--color-text-muted); font-size:.9rem;">

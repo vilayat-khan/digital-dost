@@ -8,6 +8,8 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ContactController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -19,3 +21,15 @@ Route::get('/post/{slug}', [PostController::class, 'show'])->name('post.show');
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
+
+Route::get('/about', [PageController::class, 'about'])->name('about');
+
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+
+Route::get('/privacy-policy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/terms-of-use', [PageController::class, 'terms'])->name('terms');
+Route::get('/disclaimer', [PageController::class, 'disclaimer'])->name('disclaimer');
+Route::get('/cookie-policy', [PageController::class, 'cookies'])->name('cookies');
+Route::get('/affiliate-disclosure', [PageController::class, 'affiliate'])->name('affiliate');
+Route::get('/editorial-policy', [PageController::class, 'editorial'])->name('editorial');

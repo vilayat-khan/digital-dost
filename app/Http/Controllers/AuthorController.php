@@ -7,15 +7,15 @@ use App\Models\Post;
 
 class AuthorController extends Controller
 {
-    public function show(AuthorProfile $authorProfile)
+    public function show(AuthorProfile $author)
     {
-        $authorProfile->loadCount([
+        $author->loadCount([
             'posts' => fn ($q) => $q->published(),
         ]);
 
         $posts = Post::published()
             ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type')
-            ->where('author_id', $authorProfile->id)
+            ->where('author_id', $author->id)
             ->with([
                 'author:id,display_name,slug,avatar',
                 'category:id,name,slug',
@@ -25,7 +25,7 @@ class AuthorController extends Controller
             ->withQueryString();
 
         return view('author-show', [
-            'author' => $authorProfile,
+            'author' => $author,
             'posts' => $posts,
         ]);
     }

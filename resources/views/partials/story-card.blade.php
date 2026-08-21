@@ -12,6 +12,6 @@
             {{ strtoupper(optional($post->category)->name ?? 'Story') }}
         </div>
         <h3 style="margin:8px 0 6px; font-size:1.04rem; line-height:1.32;">{{ $post->title }}</h3>
-        <div class="muted" style="font-size:.84rem;">By {{ optional($post->author)->name ?? 'Digital Dost' }}</div>
+        <div class="muted" style="font-size:.84rem;">By {{ optional($post->author)->display_name ?? 'Digital Dost' }}</div>
     </div>
 </a>

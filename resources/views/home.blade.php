@@ -41,7 +41,7 @@
                             <div>
                                 <div class="eyebrow" style="font-size:.68rem; color:var(--color-primary); font-weight:800;">{{ strtoupper(optional($post->category)->name ?? 'News') }}</div>
                                 <div style="font-weight:800; line-height:1.3; margin-top:5px;">{{ $post->title }}</div>
-                                <div class="muted" style="font-size:.82rem; margin-top:5px;">By {{ optional($post->author)->name ?? 'Digital Dost' }}</div>
+                                <div class="muted" style="font-size:.82rem; margin-top:5px;">By {{ optional($post->author)->display_name ?? 'Digital Dost' }}</div>
                             </div>
                         </a>
                     @endforeach

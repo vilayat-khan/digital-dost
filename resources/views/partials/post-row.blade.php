@@ -10,6 +10,6 @@
         @if($post->excerpt)
             <p class="mt-2 text-sm text-slate-600 line-clamp-2">{{ $post->excerpt }}</p>
         @endif
-        <div class="mt-3 text-[11px] font-mono uppercase tracking-[0.14em] text-slate-400">{{ optional($post->author)->name ?? 'Digital Dost' }} · {{ $post->published_at?->diffForHumans() }}</div>
+        <div class="mt-3 text-[11px] font-mono uppercase tracking-[0.14em] text-slate-400">{{ optional($post->author)->display_name ?? 'Digital Dost' }} · {{ $post->published_at?->diffForHumans() }}</div>
     </div>
 </a>

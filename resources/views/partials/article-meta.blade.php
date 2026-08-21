@@ -8,12 +8,12 @@
             @if(optional($post->author)->avatar)
                 <img src="{{ Storage::url($post->author->avatar) }}" alt="{{ $post->author->name }}" style="width:100%; height:100%; object-fit:cover;">
             @else
-                {{ strtoupper(substr(optional($post->author)->name ?? 'D', 0, 1)) }}
+                {{ strtoupper(substr(optional($post->author)->display_name ?? 'D', 0, 1)) }}
             @endif
         </div>
 
         <div>
-            <div style="font-weight:700;">{{ optional($post->author)->name ?? 'Digital Dost' }}</div>
+            <div style="font-weight:700;">{{ optional($post->author)->display_name ?? 'Digital Dost' }}</div>
             <div class="muted" style="font-size:.84rem;">{{ optional($post->published_at)?->format('d M Y') }} · {{ $readMins }} min read</div>
         </div>
     </div>

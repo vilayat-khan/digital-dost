@@ -26,7 +26,7 @@
                         @if($featured->excerpt)
                             <p class="muted" style="font-size:1.06rem; max-width:62ch; margin:0;">{{ $featured->excerpt }}</p>
                         @endif
-                        <div class="muted" style="margin-top:10px; font-size:.88rem;">By {{ optional($featured->author)->name ?? 'Digital Dost' }}</div>
+                        <div class="muted" style="margin-top:10px; font-size:.88rem;">By {{ optional($featured->author)->display_name ?? 'Digital Dost' }}</div>
                     </div>
                 </a>
 

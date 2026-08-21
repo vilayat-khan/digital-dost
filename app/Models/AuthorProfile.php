@@ -35,6 +35,11 @@ class AuthorProfile extends Model
         });
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -45,10 +50,7 @@ class AuthorProfile extends Model
         return $this->hasMany(Post::class, 'author_id');
     }
 
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
+    
 
     public function getAvatarUrlAttribute(): ?string
     {

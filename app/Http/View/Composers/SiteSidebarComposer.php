@@ -16,7 +16,6 @@ class SiteSidebarComposer
                 'topCategories' => Category::query()
                     ->select('id', 'name', 'slug', 'parent_id', 'sort_order', 'show_on_home')
                     ->whereNull('parent_id')
-                    ->where('show_on_home', 1)
                     ->with([
                         'children' => function ($query) {
                             $query->select('id', 'name', 'slug', 'parent_id', 'sort_order')
@@ -28,7 +27,10 @@ class SiteSidebarComposer
                     ->orderBy('name')
                     ->get(),
 
-                'trending' => Post::published()
+                'trending' => Post::query()
+                    ->where('status', 'published')
+                    ->whereNotNull('published_at')
+                    ->where('published_at', '<=', now())
                     ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type', 'reading_time')
                     ->with([
                         'author:id,display_name,slug,avatar',
@@ -38,7 +40,10 @@ class SiteSidebarComposer
                     ->take(5)
                     ->get(),
 
-                'trendingHot' => Post::published()
+                'trendingHot' => Post::query()
+                    ->where('status', 'published')
+                    ->whereNotNull('published_at')
+                    ->where('published_at', '<=', now())
                     ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type', 'reading_time')
                     ->with([
                         'author:id,display_name,slug,avatar',
@@ -48,9 +53,12 @@ class SiteSidebarComposer
                     ->take(4)
                     ->get(),
 
-                'latestReviews' => Post::published()
-                    ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type', 'reading_time')
+                'latestReviews' => Post::query()
+                    ->where('status', 'published')
+                    ->whereNotNull('published_at')
+                    ->where('published_at', '<=', now())
                     ->where('type', 'review')
+                    ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type', 'reading_time')
                     ->with([
                         'author:id,display_name,slug,avatar',
                         'category:id,name,slug',

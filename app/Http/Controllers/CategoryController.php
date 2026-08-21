@@ -20,7 +20,7 @@ class CategoryController extends Controller
             ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type')
             ->whereIn('category_id', $categoryIds)
             ->with([
-                'author:id,name,slug,avatar',
+                'author:id,display_name,slug,avatar',
                 'category:id,name,slug',
             ])
             ->latest('published_at')

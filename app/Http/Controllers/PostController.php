@@ -24,7 +24,7 @@ class PostController extends Controller
         $related = Post::published()
             ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type')
             ->with([
-                'author:id,display_name,slug,avatar',
+                'author:id,display_name,slug,avatar,bio',
                 'category:id,name,slug',
             ])
             ->where('category_id', $post->category_id)
@@ -37,7 +37,7 @@ class PostController extends Controller
             $extra = Post::published()
                 ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type')
                 ->with([
-                    'author:id,display_name,slug,avatar',
+                    'author:id,display_name,slug,avatar,bio',
                     'category:id,name,slug',
                 ])
                 ->whereKeyNot($post->id)

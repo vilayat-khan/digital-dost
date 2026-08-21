@@ -452,7 +452,7 @@
             <section class="card" style="display:flex; gap:14px; padding:20px; margin-top:24px;">
                 <div style="width:56px; height:56px; border-radius:999px; overflow:hidden; background:var(--color-surface-2); display:grid; place-items:center; font-weight:900; flex-shrink:0;">
                     @if(optional($post->author)->avatar)
-                        <img src="{{ Storage::url($post->author->avatar) }}" alt="{{ $post->author->name }}" style="width:100%; height:100%; object-fit:cover;">
+                        <img src="{{ Storage::url($post->author->avatar) }}" alt="{{ $post->author->display_name }}" style="width:100%; height:100%; object-fit:cover;">
                     @else
                         {{ strtoupper(substr(optional($post->author)->display_name ?? 'D', 0, 1)) }}
                     @endif

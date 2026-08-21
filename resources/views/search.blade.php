@@ -3,9 +3,8 @@
 @section('title', $query ? 'Search: ' . $query . ' — Digital Dost' : 'Search — Digital Dost')
 @section('meta_description', 'Search articles, reviews, news and guides on Digital Dost.')
 @section('canonical', url()->current())
-@push('head')
-<meta name="robots" content="noindex,follow">
-@endpush
+@section('robots', 'noindex,follow')
+
 @section('full-width')
 <div class="container">
     <section style="padding:8px 0 24px;">

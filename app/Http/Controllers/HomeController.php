@@ -23,7 +23,7 @@ class HomeController extends Controller
             $latest = Post::published()
                 ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type', 'reading_time')
                 ->with([
-                    'author:id,name,slug,avatar',
+                    'author:id,display_name,slug,avatar',
                     'category:id,name,slug',
                 ])
                 ->when($featured, fn ($q) => $q->whereKeyNot($featured->id))

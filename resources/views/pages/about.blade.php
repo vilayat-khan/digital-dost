@@ -11,7 +11,7 @@
         <h1 style="margin:10px 0 14px;">About Digital Dost</h1>
 
         <p class="muted" style="margin-bottom:18px;">
-            Digital Dost is a tech publication focused on making technology easier to understand in simple Hinglish.
+            Digital Dost is a tech publication focused on making technology easier to understand.
         </p>
 
         <h2 style="margin:26px 0 10px;">What we cover</h2>

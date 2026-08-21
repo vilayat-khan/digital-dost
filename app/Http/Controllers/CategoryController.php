@@ -7,15 +7,22 @@ use App\Models\Post;
 
 class CategoryController extends Controller
 {
-    public function show(string $slug)
+    public function show(Category $category)
     {
-        $category = Category::with('children')->where('slug', $slug)->firstOrFail();
+        $category->load([
+            'children:id,name,slug,parent_id,sort_order',
+        ]);
 
-        $categoryIds = $category->children->pluck('id')->push($category->id);
+        $categoryIds = $category->children->pluck('id')
+            ->push($category->id);
 
         $posts = Post::published()
+            ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type')
             ->whereIn('category_id', $categoryIds)
-            ->with(['author.authorProfile', 'category'])
+            ->with([
+                'author:id,name,slug,avatar',
+                'category:id,name,slug',
+            ])
             ->latest('published_at')
             ->paginate(12)
             ->withQueryString();

@@ -7,13 +7,15 @@ use App\Models\Tag;
 
 class TagController extends Controller
 {
-    public function show(string $slug)
+    public function show(Tag $tag)
     {
-        $tag = Tag::where('slug', $slug)->firstOrFail();
-
         $posts = Post::published()
-            ->whereHas('tags', fn ($q) => $q->where('tags.id', $tag->id))
-            ->with(['author', 'category'])
+            ->select('id', 'title', 'slug', 'excerpt', 'featured_image', 'author_id', 'category_id', 'published_at', 'type')
+            ->whereHas('tags', fn ($query) => $query->whereKey($tag->id))
+            ->with([
+                'author:id,name,slug,avatar',
+                'category:id,name,slug',
+            ])
             ->latest('published_at')
             ->paginate(12)
             ->withQueryString();

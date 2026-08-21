@@ -454,11 +454,11 @@
                     @if(optional($post->author)->avatar)
                         <img src="{{ Storage::url($post->author->avatar) }}" alt="{{ $post->author->name }}" style="width:100%; height:100%; object-fit:cover;">
                     @else
-                        {{ strtoupper(substr(optional($post->author)->name ?? 'D', 0, 1)) }}
+                        {{ strtoupper(substr(optional($post->author)->display_name ?? 'D', 0, 1)) }}
                     @endif
                 </div>
                 <div>
-                    <div style="font-weight:900;">{{ optional($post->author)->name ?? 'Digital Dost' }}</div>
+                    <div style="font-weight:900;">{{ optional($post->author)->display_name ?? 'Digital Dost' }}</div>
                     <p class="muted" style="margin:4px 0 0;">{{ optional($post->author)->bio ?? 'Tech writer covering gadgets, AI, apps and software in simple language.' }}</p>
                 </div>
             </section>

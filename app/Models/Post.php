@@ -42,6 +42,11 @@ class Post extends Model
         ];
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function author()
     {
         return $this->belongsTo(AuthorProfile::class, 'author_id');
@@ -59,8 +64,10 @@ class Post extends Model
 
     public function scopePublished($query)
     {
-        return $query->where('status', 'published');
-            // ->where('published_at', '<=', now());
+        return $query
+            ->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now());
     }
 
     public function getFeaturedImageUrlAttribute(): ?string
@@ -69,9 +76,32 @@ class Post extends Model
             return null;
         }
 
-        return Storage::url($this->featured_image);
-
-        // return asset('storage/app/public/' . $this->featured_image);
+        return url(Storage::url($this->featured_image));
     }
+
+    // public function scopePublished($query)
+    // {
+    //     return $query->where('status', 'published');
+    //         // ->where('published_at', '<=', now());
+    // }
+
+    // public function scopePublished($query)
+    // {
+    //     return $query
+    //         ->where('status', 'published')
+    //         ->whereNotNull('published_at')
+    //         ->where('published_at', '<=', now());
+    // }
+
+    // public function getFeaturedImageUrlAttribute(): ?string
+    // {
+    //     if (!$this->featured_image) {
+    //         return null;
+    //     }
+
+    //     return Storage::url($this->featured_image);
+
+    //     // return asset('storage/app/public/' . $this->featured_image);
+    // }
     
 }

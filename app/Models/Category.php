@@ -21,6 +21,19 @@ class Category extends Model
         'show_on_home',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'show_on_home' => 'boolean',
+            'sort_order' => 'integer',
+        ];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');

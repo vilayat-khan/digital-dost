@@ -50,8 +50,6 @@ class AuthorProfile extends Model
         return $this->hasMany(Post::class, 'author_id');
     }
 
-    
-
     public function getAvatarUrlAttribute(): ?string
     {
         if (!$this->avatar) {

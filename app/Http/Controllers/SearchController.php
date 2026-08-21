@@ -19,7 +19,10 @@ class SearchController extends Controller
                         ->orWhere('excerpt', 'like', "%{$query}%")
                         ->orWhere('body', 'like', "%{$query}%");
                 })
-                ->with(['author', 'category'])
+                ->with([
+                    'author:id,display_name,slug,avatar',
+                    'category:id,name,slug',
+                ])
                 ->latest('published_at')
                 ->paginate(12)
                 ->withQueryString();

@@ -76,6 +76,8 @@ class Post extends Model
             return null;
         }
 
+        // return Storage::url($this->featured_image);
+
         return url(Storage::url($this->featured_image));
     }
 

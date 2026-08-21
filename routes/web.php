@@ -26,10 +26,15 @@ Route::get('/search', [SearchController::class, 'index'])->name('search');
 |--------------------------------------------------------------------------
 */
 
-Route::get('/post/{post}', [PostController::class, 'show'])->name('post.show');
-Route::get('/author/{author}', [AuthorController::class, 'show'])->name('author.show');
-Route::get('/category/{category}', [CategoryController::class, 'show'])->name('category.show');
-Route::get('/tag/{tag}', [TagController::class, 'show'])->name('tag.show');
+// Route::get('/post/{post}', [PostController::class, 'show'])->name('post.show');
+// Route::get('/author/{author}', [AuthorController::class, 'show'])->name('author.show');
+// Route::get('/category/{category}', [CategoryController::class, 'show'])->name('category.show');
+// Route::get('/tag/{tag}', [TagController::class, 'show'])->name('tag.show');
+
+Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post.show');
+Route::get('/author/{author:slug}', [AuthorController::class, 'show'])->name('author.show');
+Route::get('/category/{category:slug}', [CategoryController::class, 'show'])->name('category.show');
+Route::get('/tag/{tag:slug}', [TagController::class, 'show'])->name('tag.show');
 
 /*
 |--------------------------------------------------------------------------

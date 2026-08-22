@@ -8,6 +8,9 @@ use App\Filament\Resources\Redirects\Pages\ListRedirects;
 use App\Models\Redirect;
 use BackedEnum;
 use Closure;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -115,7 +118,8 @@ class RedirectResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_active')->label('Active'),
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Active'),
 
                 Tables\Filters\SelectFilter::make('status_code')
                     ->options([
@@ -126,13 +130,12 @@ class RedirectResource extends Resource
                         410 => '410',
                     ]),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('updated_at', 'desc');

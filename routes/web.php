@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
@@ -72,6 +72,6 @@ Route::get('/editorial-policy', [PageController::class, 'editorial'])->name('edi
 |--------------------------------------------------------------------------
 */
 
-Route::fallback(function () {
+Route::fallback(function (Request $request) {
     abort(404);
 });

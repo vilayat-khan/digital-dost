@@ -43,6 +43,15 @@
 
     /*
     |--------------------------------------------------------------------------
+    | Taxonomy and schema helpers
+    |--------------------------------------------------------------------------
+    */
+
+    $categoryName = optional($post->category)->name;
+    $keywords = $post->tags->pluck('name')->filter()->implode(', ');
+
+    /*
+    |--------------------------------------------------------------------------
     | Page UI values
     |--------------------------------------------------------------------------
     */
@@ -60,19 +69,12 @@
         1,
         round(str_word_count(strip_tags($post->body)) / 200)
     );
-
-    $hasReviewBox = $post->type === 'review'
-        && !empty($post->rating);
-
-    $hasProsCons = !empty($post->pros)
-        || !empty($post->cons);
 @endphp
 
 @section('canonical', $canonicalUrl)
-
 @section('title', $seoTitle . ' — Digital Dost')
-
 @section('meta_description', $seoDescription)
+@section('robots', 'index,follow')
 
 @section('og_type', 'article')
 @section('og_title', $seoTitle)
@@ -88,7 +90,6 @@
 
 @push('head')
 
-{{-- Article Open Graph metadata --}}
 @if($publishedAt)
     <meta property="article:published_time" content="{{ $publishedAt }}">
 @endif
@@ -97,39 +98,33 @@
     <meta property="article:modified_time" content="{{ $updatedAt }}">
 @endif
 
-<meta property="article:author" content="{{ $authorName }}">
+<meta property="article:author" content="{{ $authorProfileUrl }}">
 
-@if(optional($post->category)->name)
-    <meta property="article:section" content="{{ $post->category->name }}">
+@if($categoryName)
+    <meta property="article:section" content="{{ $categoryName }}">
 @endif
 
 @foreach($post->tags->take(5) as $tag)
     <meta property="article:tag" content="{{ $tag->name }}">
 @endforeach
 
-{{-- Article structured data --}}
 <script type="application/ld+json">
 {!! json_encode([
     '@context' => 'https://schema.org',
     '@type' => $schemaType,
-
     'mainEntityOfPage' => [
         '@type' => 'WebPage',
         '@id' => $canonicalUrl,
     ],
-
+    'url' => $canonicalUrl,
     'headline' => $seoTitle,
     'description' => $seoDescription,
-    'image' => [
-        $featuredImageUrl,
-    ],
-
+    'image' => [$featuredImageUrl],
     'author' => [
         '@type' => 'Person',
         'name' => $authorName,
         'url' => $authorProfileUrl,
     ],
-
     'publisher' => [
         '@type' => 'Organization',
         'name' => 'Digital Dost',
@@ -138,43 +133,46 @@
             'url' => asset('images/logo.png'),
         ],
     ],
-
     'datePublished' => $publishedAt,
     'dateModified' => $updatedAt,
+    'articleSection' => $categoryName,
+    'keywords' => $keywords,
+    'inLanguage' => 'en-IN',
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
 </script>
 
-{{-- Review structured data --}}
 @if($post->type === 'review' && !empty($post->rating))
 <script type="application/ld+json">
 {!! json_encode([
     '@context' => 'https://schema.org',
     '@type' => 'Review',
-
     'name' => $seoTitle,
     'headline' => $seoTitle,
     'description' => $seoDescription,
-
     'url' => $canonicalUrl,
-
     'author' => [
         '@type' => 'Person',
         'name' => $authorName,
         'url' => $authorProfileUrl,
     ],
-
+    'publisher' => [
+        '@type' => 'Organization',
+        'name' => 'Digital Dost',
+        'url' => url('/'),
+    ],
     'datePublished' => $publishedAt,
-
+    'dateModified' => $updatedAt,
     'reviewRating' => [
         '@type' => 'Rating',
         'ratingValue' => number_format((float) $post->rating, 1, '.', ''),
         'bestRating' => '10',
         'worstRating' => '1',
     ],
-
     'itemReviewed' => [
         '@type' => 'Product',
         'name' => $post->title,
+        'image' => $featuredImageUrl,
+        'url' => $canonicalUrl,
     ],
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
 </script>
@@ -273,7 +271,6 @@
         }
     }
 </style>
-
 @endpush
 
 @section('full-width')
@@ -306,7 +303,7 @@
                 <div style="display:flex; align-items:center; gap:12px;">
                     <div style="width:42px; height:42px; border-radius:999px; overflow:hidden; background:var(--color-surface-2); display:grid; place-items:center; font-weight:900;">
                         @if(optional($post->author)->avatar)
-                            <img src="{{ Storage::url($post->author->avatar) }}" alt="{{ $post->author->name }}" style="width:100%; height:100%; object-fit:cover;">
+                            <img src="{{ Storage::url($post->author->avatar) }}" alt="{{ $post->author->display_name }}" style="width:100%; height:100%; object-fit:cover;">
                         @else
                             {{ strtoupper(substr(optional($post->author)->display_name ?? 'D', 0, 1)) }}
                         @endif
@@ -318,11 +315,6 @@
                     </div>
                 </div>
 
-                <!-- <div style="display:flex; align-items:center; gap:8px;">
-                    <a class="btn" target="_blank" rel="noopener noreferrer" href="https://wa.me/?text={{ urlencode($post->title . ' ' . url()->current()) }}">WhatsApp</a>
-                    <a class="btn" target="_blank" rel="noopener noreferrer" href="https://twitter.com/intent/tweet?text={{ urlencode($post->title) }}&url={{ urlencode(url()->current()) }}">X</a>
-                    <button type="button" class="btn" onclick="navigator.clipboard.writeText(window.location.href)">Copy</button>
-                </div> -->
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                     <a
                         class="share-btn share-wa"
@@ -429,9 +421,9 @@
                 <div id="toc-mobile" style="padding:0 16px 16px; display:grid; gap:8px;"></div>
             </details>
 
-            <article id="article-body" class="article-prose" style="margin-top:28px;">
+            <div id="article-body" class="article-prose" style="margin-top:28px;">
                 {!! $post->body !!}
-            </article>
+            </div>
 
             @if(in_array($post->type, ['review', 'buying_guide', 'comparison']))
                 <div class="card" style="padding:14px 16px; margin-top:20px; background:var(--color-surface-2);">

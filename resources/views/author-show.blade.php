@@ -5,6 +5,8 @@
     use Illuminate\Support\Str;
 
     $authorName = $author->display_name;
+    $canonicalUrl = route('author.show', $author->slug);
+
     $authorDescription = $author->bio
         ? Str::limit(strip_tags($author->bio), 155)
         : 'Read articles by ' . $authorName . ' on Digital Dost.';
@@ -12,19 +14,37 @@
     $authorImage = $author->avatar
         ? url(Storage::url($author->avatar))
         : asset('images/og-default.jpg');
+
+    $sameAs = array_values(array_filter([
+        $author->twitter_url,
+        $author->linkedin_url,
+        $author->instagram_url,
+        $author->website_url,
+    ]));
+
+    $itemList = $posts->values()->map(function ($post, $index) {
+        return [
+            '@type' => 'ListItem',
+            'position' => $index + 1,
+            'name' => $post->title,
+            'url' => route('post.show', $post->slug),
+        ];
+    })->all();
 @endphp
 
 @section('title', $authorName . ' — Digital Dost')
 @section('meta_description', $authorDescription)
-@section('canonical', route('author.show', $author->slug))
+@section('canonical', $canonicalUrl)
+@section('robots', 'noindex,follow')
 
 @section('og_type', 'profile')
-@section('og_title', $authorName)
+@section('og_title', $authorName . ' — Digital Dost')
 @section('og_description', $authorDescription)
 @section('og_image', $authorImage)
 @section('og_image_alt', $authorName)
 
-@section('twitter_title', $authorName)
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', $authorName . ' — Digital Dost')
 @section('twitter_description', $authorDescription)
 @section('twitter_image', $authorImage)
 @section('twitter_image_alt', $authorName)
@@ -33,24 +53,69 @@
 <script type="application/ld+json">
 {!! json_encode([
     '@context' => 'https://schema.org',
-    '@type' => 'Person',
-    'name' => $authorName,
-    'url' => route('author.show', $author->slug),
-    'image' => $authorImage,
-    'description' => $author->bio ? strip_tags($author->bio) : null,
-    'jobTitle' => $author->designation ?: null,
-    'sameAs' => array_values(array_filter([
-        $author->twitter_url,
-        $author->linkedin_url,
-        $author->instagram_url,
-        $author->website_url,
-    ])),
+    '@type' => 'ProfilePage',
+    'name' => $authorName . ' — Author Profile',
+    'url' => $canonicalUrl,
+    'description' => $authorDescription,
+    'inLanguage' => 'en-IN',
+    'isPartOf' => [
+        '@type' => 'WebSite',
+        'name' => 'Digital Dost',
+        'url' => url('/'),
+    ],
+    'mainEntity' => [
+        '@type' => 'Person',
+        '@id' => $canonicalUrl . '#person',
+        'name' => $authorName,
+        'url' => $canonicalUrl,
+        'image' => $authorImage,
+        'description' => $author->bio ? strip_tags($author->bio) : null,
+        'jobTitle' => $author->designation ?: null,
+        'worksFor' => [
+            '@type' => 'Organization',
+            'name' => 'Digital Dost',
+            'url' => url('/'),
+        ],
+        'sameAs' => $sameAs,
+    ],
+    'hasPart' => count($itemList) ? [[
+        '@type' => 'ItemList',
+        'numberOfItems' => count($itemList),
+        'itemListElement' => $itemList,
+    ]] : null,
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Home',
+            'item' => url('/'),
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => $authorName,
+            'item' => $canonicalUrl,
+        ],
+    ],
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
 </script>
 @endpush
 
 @section('full-width')
 <div class="container">
+    <nav style="display:flex; gap:8px; flex-wrap:wrap; font-size:.8rem; color:var(--color-text-faint); margin-bottom:18px;">
+        <a href="{{ url('/') }}">Home</a>
+        <span>/</span>
+        <span style="color:var(--color-text-muted);">{{ $authorName }}</span>
+    </nav>
+
     <section class="card" style="padding:24px; margin-bottom:24px;">
         <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
             <div style="width:72px; height:72px; border-radius:999px; overflow:hidden; background:var(--color-surface-2); display:grid; place-items:center; font-weight:900;">

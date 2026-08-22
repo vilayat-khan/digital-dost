@@ -1,11 +1,75 @@
 @extends('layouts.site')
 
-@section('canonical', route('disclaimer'))
-@section('title', 'Disclaimer — Digital Dost')
-@section('meta_description', 'Read the Digital Dost disclaimer regarding reviews, opinions, product information, and general informational content.')
+@php
+    $canonicalUrl = route('disclaimer');
+    $seoTitle = 'Disclaimer — Digital Dost';
+    $seoDescription = 'Read the Digital Dost disclaimer regarding reviews, opinions, product information, and general informational content.';
+    $websiteId = url('/') . '#website';
+@endphp
+
+@section('canonical', $canonicalUrl)
+@section('title', $seoTitle)
+@section('meta_description', $seoDescription)
+@section('robots', 'index,follow')
+
+@section('og_type', 'website')
+@section('og_title', $seoTitle)
+@section('og_description', $seoDescription)
+@section('og_image', asset('images/og-default.jpg'))
+@section('og_image_alt', 'Disclaimer — Digital Dost')
+
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', $seoTitle)
+@section('twitter_description', $seoDescription)
+@section('twitter_image', asset('images/og-default.jpg'))
+@section('twitter_image_alt', 'Disclaimer — Digital Dost')
+
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'WebPage',
+    '@id' => $canonicalUrl . '#webpage',
+    'name' => $seoTitle,
+    'url' => $canonicalUrl,
+    'description' => $seoDescription,
+    'inLanguage' => 'en-IN',
+    'isPartOf' => [
+        '@id' => $websiteId,
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Home',
+            'item' => url('/'),
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => 'Disclaimer',
+            'item' => $canonicalUrl,
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
 
 @section('full-width')
 <div class="container" style="max-width:920px; padding-block:40px;">
+    <nav style="display:flex; gap:8px; flex-wrap:wrap; font-size:.8rem; color:var(--color-text-faint); margin-bottom:18px;">
+        <a href="{{ url('/') }}">Home</a>
+        <span>/</span>
+        <span style="color:var(--color-text-muted);" aria-current="page">Disclaimer</span>
+    </nav>
+
     <article class="card" style="padding:28px;">
         <div class="eyebrow">Disclaimer</div>
         <h1 style="margin:10px 0 14px;">Disclaimer</h1>

@@ -22,6 +22,10 @@ return [
         'youtube' => env('SOCIAL_YOUTUBE_URL'),
     ],
 
+    'contact' => [
+        'phone' => env('CONTACT_PHONE'),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],

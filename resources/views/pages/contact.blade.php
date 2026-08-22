@@ -1,11 +1,106 @@
 @extends('layouts.site')
 
-@section('canonical', route('contact'))
-@section('title', 'Contact Us — Digital Dost')
-@section('meta_description', 'Contact Digital Dost for feedback, corrections, partnerships, press inquiries, or general questions.')
+@php
+    $canonicalUrl = route('contact');
+    $seoTitle = 'Contact Us — Digital Dost';
+    $seoDescription = 'Contact Digital Dost for feedback, corrections, partnerships, press inquiries, or general questions.';
+    $organizationId = url('/') . '#organization';
+    $websiteId = url('/') . '#website';
+
+    $contactEmail = config('mail.from.address');
+    $contactPhone = config('services.contact.phone');
+
+    $contactPoint = array_filter([
+        '@type' => 'ContactPoint',
+        'contactType' => 'customer support',
+        'email' => $contactEmail,
+        'telephone' => $contactPhone,
+        'availableLanguage' => ['en', 'hi'],
+    ]);
+@endphp
+
+@section('canonical', $canonicalUrl)
+@section('title', $seoTitle)
+@section('meta_description', $seoDescription)
+@section('robots', 'index,follow')
+
+@section('og_type', 'website')
+@section('og_title', $seoTitle)
+@section('og_description', $seoDescription)
+@section('og_image', asset('images/og-default.jpg'))
+@section('og_image_alt', 'Contact Digital Dost')
+
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', $seoTitle)
+@section('twitter_description', $seoDescription)
+@section('twitter_image', asset('images/og-default.jpg'))
+@section('twitter_image_alt', 'Contact Digital Dost')
+
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'ContactPage',
+    '@id' => $canonicalUrl . '#webpage',
+    'name' => $seoTitle,
+    'url' => $canonicalUrl,
+    'description' => $seoDescription,
+    'inLanguage' => 'en-IN',
+    'isPartOf' => [
+        '@id' => $websiteId,
+    ],
+    'about' => [
+        '@id' => $organizationId,
+    ],
+    'mainEntity' => [
+        '@id' => $organizationId,
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+
+@if($contactEmail || $contactPhone)
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'Organization',
+    '@id' => $organizationId,
+    'name' => 'Digital Dost',
+    'url' => url('/'),
+    'contactPoint' => [$contactPoint],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endif
+
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Home',
+            'item' => url('/'),
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => 'Contact',
+            'item' => $canonicalUrl,
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
 
 @section('full-width')
 <div class="container" style="max-width:860px; padding-block:40px;">
+    <nav style="display:flex; gap:8px; flex-wrap:wrap; font-size:.8rem; color:var(--color-text-faint); margin-bottom:18px;">
+        <a href="{{ url('/') }}">Home</a>
+        <span>/</span>
+        <span style="color:var(--color-text-muted);">Contact</span>
+    </nav>
+
     <section class="card" style="padding:28px;">
         <div class="eyebrow">Contact</div>
         <h1 style="margin:10px 0 8px;">Contact Digital Dost</h1>

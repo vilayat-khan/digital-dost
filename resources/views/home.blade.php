@@ -1,15 +1,85 @@
 @extends('layouts.site')
-@section('canonical', url('/'))
-@section('title', 'Digital Dost — AI, Gadgets Reviews & Guides')
-@section('meta_description', 'Latest tech news, reviews, AI, robotics, mobile coverage, software guides and buying advice.')
-@section('og_title', 'Digital Dost — AI, Gadgets Reviews & Guides')
 
-@section('full-width')
 @php
+    use Illuminate\Support\Facades\Storage;
+
+    $canonicalUrl = url('/');
+    $seoTitle = 'Digital Dost — AI, Gadgets Reviews & Guides';
+    $seoDescription = 'Latest tech news, reviews, AI, robotics, mobile coverage, software guides and buying advice.';
+    $defaultOgImage = asset('images/og-default.jpg');
+
     $heroSide = $latest->slice(0, 4);
     $moreStories = $latest->slice(4);
+
+    $sameAs = array_values(array_filter([
+        config('services.social.facebook'),
+        config('services.social.twitter'),
+        config('services.social.instagram'),
+        config('services.social.linkedin'),
+        config('services.social.youtube'),
+    ]));
 @endphp
 
+@section('canonical', $canonicalUrl)
+@section('title', $seoTitle)
+@section('meta_description', $seoDescription)
+@section('robots', 'index,follow')
+
+@section('og_type', 'website')
+@section('og_title', $seoTitle)
+@section('og_description', $seoDescription)
+@section('og_image', $defaultOgImage)
+@section('og_image_alt', 'Digital Dost')
+
+@section('twitter_card', 'summary_large_image')
+@section('twitter_title', $seoTitle)
+@section('twitter_description', $seoDescription)
+@section('twitter_image', $defaultOgImage)
+@section('twitter_image_alt', 'Digital Dost')
+
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'Organization',
+    '@id' => $canonicalUrl . '#organization',
+    'name' => 'Digital Dost',
+    'url' => $canonicalUrl,
+    'logo' => [
+        '@type' => 'ImageObject',
+        'url' => asset('images/logo.png'),
+    ],
+    'image' => $defaultOgImage,
+    'description' => $seoDescription,
+    'sameAs' => $sameAs,
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'WebSite',
+    '@id' => $canonicalUrl . '#website',
+    'name' => 'Digital Dost',
+    'url' => $canonicalUrl,
+    'description' => $seoDescription,
+    'inLanguage' => 'en-IN',
+    'publisher' => [
+        '@id' => $canonicalUrl . '#organization',
+    ],
+    'potentialAction' => [
+        '@type' => 'SearchAction',
+        'target' => [
+            '@type' => 'EntryPoint',
+            'urlTemplate' => url('/search?q={search_term_string}'),
+        ],
+        'query-input' => 'required name=search_term_string',
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
+
+@section('full-width')
 <div class="container">
     @if($featured)
         <section style="display:grid; grid-template-columns:1fr; gap:28px; padding:10px 0 36px; border-bottom:1px solid var(--color-border);">

@@ -14,6 +14,14 @@ return [
     |
     */
 
+    'social' => [
+        'facebook' => env('SOCIAL_FACEBOOK_URL'),
+        'twitter' => env('SOCIAL_TWITTER_URL'),
+        'instagram' => env('SOCIAL_INSTAGRAM_URL'),
+        'linkedin' => env('SOCIAL_LINKEDIN_URL'),
+        'youtube' => env('SOCIAL_YOUTUBE_URL'),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],

@@ -7,7 +7,7 @@
     $websiteId = url('/') . '#website';
 @endphp
 
-@section('canonical', $canonicalUrl)
+<!-- @section('canonical', $canonicalUrl) -->
 @section('title', $seoTitle)
 @section('meta_description', $seoDescription)
 @section('robots', 'noindex,follow')

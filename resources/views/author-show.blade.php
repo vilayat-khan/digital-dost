@@ -1,7 +1,6 @@
 @extends('layouts.site')
 
 @php
-    use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
 
     $authorName = $author->display_name;

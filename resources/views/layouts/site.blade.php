@@ -45,8 +45,8 @@
             "@type": "ImageObject",
             "url": "{{ asset('favicon.ico') }}"
         }
-    } 
-    </script> 
+    }
+    </script>
 
     <script type="application/ld+json">
     {

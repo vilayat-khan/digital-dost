@@ -13,7 +13,7 @@
                     <div class="nav-item has-dropdown">
                         <a
                             href="{{ route('category.show', $category->slug) }}"
-                            class="{{ request()->routeIs('category.show') && request()->route('slug') === $category->slug ? 'is-active' : '' }}"
+                            class="{{ request()->routeIs('category.show') && optional(request()->route('category'))->slug === $category->slug ? 'is-active' : '' }}"
                         >
                             {{ $category->name }}
                         </a>

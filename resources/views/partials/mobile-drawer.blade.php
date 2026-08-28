@@ -59,7 +59,7 @@
                             <div class="mobile-disclosure-content">
                                 <a
                                     href="{{ route('category.show', $category->slug) }}"
-                                    class="mobile-nav-link subtle {{ request()->routeIs('category.show') && request()->route('slug') === $category->slug ? 'is-active' : '' }}"
+                                    class="mobile-nav-link subtle {{ request()->routeIs('category.show') && optional(request()->route('category'))->slug === $category->slug ? 'is-active' : '' }}"
                                 >
                                     <span class="mobile-nav-text">
                                         <strong>View all {{ $category->name }}</strong>
@@ -72,7 +72,7 @@
                                     @foreach($category->children as $child)
                                         <a
                                             href="{{ route('category.show', $child->slug) }}"
-                                            class="{{ request()->routeIs('category.show') && request()->route('slug') === $child->slug ? 'is-active' : '' }}"
+                                            class="{{ request()->routeIs('category.show') && optional(request()->route('category'))->slug === $child->slug ? 'is-active' : '' }}"
                                         >
                                             {{ $child->name }}
                                         </a>
@@ -83,7 +83,7 @@
                     @else
                         <a
                             href="{{ route('category.show', $category->slug) }}"
-                            class="mobile-nav-link {{ request()->routeIs('category.show') && request()->route('slug') === $category->slug ? 'is-active' : '' }}"
+                            class="mobile-nav-link {{ request()->routeIs('category.show') && optional(request()->route('category'))->slug === $category->slug ? 'is-active' : '' }}"
                         >
                             <span class="mobile-nav-text">
                                 <strong>{{ $category->name }}</strong>

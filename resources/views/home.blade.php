@@ -103,7 +103,7 @@
                         <a href="{{ route('post.show', $post->slug) }}" style="display:grid; grid-template-columns:100px 1fr; gap:14px; align-items:start; padding-bottom:16px; border-bottom:1px solid var(--color-border);">
                             <div style="aspect-ratio:4/3; border-radius:14px; overflow:hidden; background:var(--color-surface-2);">
                                 @if($post->featured_image)
-                                    <img src="{{ $post->featured_image_url) }}" alt="{{ $post->title }}" style="width:100%; height:100%; object-fit:cover;">
+                                    <img src="{{ $post->featured_image_url }}" alt="{{ $post->title }}" style="width:100%; height:100%; object-fit:cover;">
                                 @endif
                             </div>
                             <div>

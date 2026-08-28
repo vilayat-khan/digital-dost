@@ -11,9 +11,7 @@
         ? Str::limit(strip_tags($author->bio), 155)
         : 'Read articles by ' . $authorName . ' on Digital Dost.';
 
-    $authorImage = $author->avatar
-        ? url(Storage::url($author->avatar))
-        : asset('images/og-default.jpg');
+    $authorImage = $author->avatar_url ?: asset('images/og-default.jpg');
 
     $sameAs = array_values(array_filter([
         $author->twitter_url,
@@ -120,7 +118,7 @@
         <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
             <div style="width:72px; height:72px; border-radius:999px; overflow:hidden; background:var(--color-surface-2); display:grid; place-items:center; font-weight:900;">
                 @if($author->avatar)
-                    <img src="{{ Storage::url($author->avatar) }}" alt="{{ $authorName }}" style="width:100%; height:100%; object-fit:cover;">
+                    <img src="{{ $author->avatar_url }}" alt="{{ $authorName }}" style="width:100%; height:100%; object-fit:cover;">
                 @else
                     {{ strtoupper(substr($authorName, 0, 1)) }}
                 @endif

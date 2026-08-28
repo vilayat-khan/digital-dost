@@ -19,9 +19,7 @@
     $seoDescription = $post->meta_description
         ?: ($post->excerpt ?: Str::limit(strip_tags($post->body), 155));
 
-    $featuredImageUrl = $post->featured_image
-        ? url(Storage::url($post->featured_image))
-        : asset('images/og-default.jpg');
+    $featuredImageUrl = $post->featured_image_url ?: asset('images/og-default.jpg');
 
     $schemaType = $post->schema_type
         ?: ($post->type === 'news' ? 'NewsArticle' : 'BlogPosting');
@@ -303,7 +301,7 @@
                 <div style="display:flex; align-items:center; gap:12px;">
                     <div style="width:42px; height:42px; border-radius:999px; overflow:hidden; background:var(--color-surface-2); display:grid; place-items:center; font-weight:900;">
                         @if(optional($post->author)->avatar)
-                            <img src="{{ Storage::url($post->author->avatar) }}" alt="{{ $post->author->display_name }}" style="width:100%; height:100%; object-fit:cover;">
+                            <img src="{{ $post->author->avatar_url }}" alt="{{ $post->author->display_name }}" style="width:100%; height:100%; object-fit:cover;">
                         @else
                             {{ strtoupper(substr(optional($post->author)->display_name ?? 'D', 0, 1)) }}
                         @endif
@@ -409,7 +407,7 @@
 
             @if($post->featured_image)
                 <figure style="margin:26px 0 0;">
-                    <img src="{{ Storage::url($post->featured_image) }}" alt="{{ $post->title }}" style="width:100%; border-radius:24px; border:1px solid var(--color-border);">
+                    <img src="{{ $post->featured_image_url }}" alt="{{ $post->title }}" style="width:100%; border-radius:24px; border:1px solid var(--color-border);">
                     @if($post->image_caption)
                         <figcaption class="muted" style="margin-top:8px; font-size:.82rem; text-align:center;">{{ $post->image_caption }}</figcaption>
                     @endif
@@ -444,7 +442,7 @@
             <section class="card" style="display:flex; gap:14px; padding:20px; margin-top:24px;">
                 <div style="width:56px; height:56px; border-radius:999px; overflow:hidden; background:var(--color-surface-2); display:grid; place-items:center; font-weight:900; flex-shrink:0;">
                     @if(optional($post->author)->avatar)
-                        <img src="{{ Storage::url($post->author->avatar) }}" alt="{{ $post->author->display_name }}" style="width:100%; height:100%; object-fit:cover;">
+                        <img src="{{ $post->author->avatar_url }}" alt="{{ $post->author->display_name }}" style="width:100%; height:100%; object-fit:cover;">
                     @else
                         {{ strtoupper(substr(optional($post->author)->display_name ?? 'D', 0, 1)) }}
                     @endif

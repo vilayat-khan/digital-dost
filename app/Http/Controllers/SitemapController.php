@@ -43,27 +43,27 @@ class SitemapController extends Controller
                     ];
                 });
 
-            Tag::query()
-                ->select('id', 'slug', 'updated_at')
-                ->orderBy('id')
-                ->get()
-                ->each(function (Tag $tag) use (&$urls) {
-                    $urls[] = [
-                        'loc' => route('tag.show', $tag),
-                        'lastmod' => $tag->updated_at?->toAtomString(),
-                    ];
-                });
+            // Tag::query()
+            //     ->select('id', 'slug', 'updated_at')
+            //     ->orderBy('id')
+            //     ->get()
+            //     ->each(function (Tag $tag) use (&$urls) {
+            //         $urls[] = [
+            //             'loc' => route('tag.show', $tag),
+            //             'lastmod' => $tag->updated_at?->toAtomString(),
+            //         ];
+            //     });
 
-            AuthorProfile::query()
-                ->select('id', 'slug', 'updated_at')
-                ->orderBy('id')
-                ->get()
-                ->each(function (AuthorProfile $author) use (&$urls) {
-                    $urls[] = [
-                        'loc' => route('author.show', $author),
-                        'lastmod' => $author->updated_at?->toAtomString(),
-                    ];
-                });
+            // AuthorProfile::query()
+            //     ->select('id', 'slug', 'updated_at')
+            //     ->orderBy('id')
+            //     ->get()
+            //     ->each(function (AuthorProfile $author) use (&$urls) {
+            //         $urls[] = [
+            //             'loc' => route('author.show', $author),
+            //             'lastmod' => $author->updated_at?->toAtomString(),
+            //         ];
+            //     });
 
             Post::query()
                 ->where('status', 'published')

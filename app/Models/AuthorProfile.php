@@ -56,6 +56,6 @@ class AuthorProfile extends Model
             return null;
         }
 
-        return Storage::url($this->avatar);
+        return url(Storage::url($this->avatar));
     }
 }

@@ -37,7 +37,7 @@ class PostsTable
                         'warning' => 'news',
                         'info' => 'buying_guide',
                         'purple' => 'tutorial',
-                        'pink' => 'comparison',
+                        'danger' => 'comparison',
                     ]),
 
                 BadgeColumn::make('status')

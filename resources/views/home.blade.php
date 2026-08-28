@@ -87,7 +87,7 @@
                 <a href="{{ route('post.show', $featured->slug) }}" style="display:block;">
                     <div style="aspect-ratio:16/10; background:var(--color-surface-2); border-radius:24px; overflow:hidden;">
                         @if($featured->featured_image)
-                            <img src="{{ Storage::url($featured->featured_image) }}" alt="{{ $featured->title }}" style="width:100%; height:100%; object-fit:cover;">
+                            <img src="{{ $featured->featured_image_url }}" alt="{{ $featured->title }}" style="width:100%; height:100%; object-fit:cover;">
                         @endif
                     </div>
                     <div style="margin-top:16px;">

@@ -22,7 +22,7 @@
 @section('og_type', 'website')
 @section('og_title', $seoTitle)
 @section('og_description', $seoDescription)
-@section('og_url', $canonicalUrl)
+<!-- @section('og_url', $canonicalUrl) -->
 @section('og_image', asset('images/og-default.jpg'))
 @section('og_image_alt', $category->name . ' — Digital Dost')
 

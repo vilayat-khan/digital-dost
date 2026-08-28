@@ -37,7 +37,7 @@
 
     <script type="application/ld+json">
     {
-        "@@context": "https://schema.org",
+        "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Digital Dost",
         "url": "{{ url('/') }}",
@@ -50,7 +50,7 @@
 
     <script type="application/ld+json">
     {
-        "@@context": "https://schema.org",
+        "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "Digital Dost",
         "url": "{{ url('/') }}"

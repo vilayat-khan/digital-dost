@@ -27,7 +27,7 @@ class PostsTable
                     ->label('Category')
                     ->badge(),
 
-                TextColumn::make('author.name')
+                TextColumn::make('author.display_name')
                     ->label('Author'),
 
                 BadgeColumn::make('type')
@@ -36,6 +36,8 @@ class PostsTable
                         'success' => 'review',
                         'warning' => 'news',
                         'info' => 'buying_guide',
+                        'purple' => 'tutorial',
+                        'pink' => 'comparison',
                     ]),
 
                 BadgeColumn::make('status')
@@ -70,7 +72,8 @@ class PostsTable
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
+                DeleteAction::make()
+                    ->visible(fn () => auth()->user()->isAdmin()),
             ])
             ->defaultSort('created_at', 'desc');
     }

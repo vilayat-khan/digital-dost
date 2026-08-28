@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -14,6 +15,8 @@ class PostController extends Controller
             $post->published_at->lte(now()),
             404
         );
+
+        $post->increment('views_count');
 
         $post->loadMissing([
             'author:id,display_name,slug,avatar,bio',

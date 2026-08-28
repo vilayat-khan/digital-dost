@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ContactMessageMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
@@ -31,6 +32,12 @@ class ContactController extends Controller
         ]);
 
         Mail::to(config('mail.from.address'))->send(new ContactMessageMail($validated));
+
+        Log::info('Contact form submitted', [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'ip' => $request->ip(),
+        ]);
 
         return back()->with('contact_success', 'Thanks for contacting us. We have received your message.');
     }

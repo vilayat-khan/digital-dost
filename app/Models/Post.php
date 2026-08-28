@@ -20,6 +20,7 @@ class Post extends Model
         'type',
         'status',
         'featured_image',
+        'image_caption',
         'author_id',
         'category_id',
         'published_at',
@@ -30,6 +31,10 @@ class Post extends Model
         'views_count',
         'reading_time',
         'is_featured',
+        'rating',
+        'pros',
+        'cons',
+        'verdict',
     ];
 
     protected function casts(): array
@@ -39,6 +44,9 @@ class Post extends Model
             'views_count' => 'integer',
             'reading_time' => 'integer',
             'is_featured' => 'boolean',
+            'rating' => 'decimal:1',
+            'pros' => 'array',
+            'cons' => 'array',
         ];
     }
 
@@ -76,34 +84,6 @@ class Post extends Model
             return null;
         }
 
-        // return Storage::url($this->featured_image);
-
         return url(Storage::url($this->featured_image));
     }
-
-    // public function scopePublished($query)
-    // {
-    //     return $query->where('status', 'published');
-    //         // ->where('published_at', '<=', now());
-    // }
-
-    // public function scopePublished($query)
-    // {
-    //     return $query
-    //         ->where('status', 'published')
-    //         ->whereNotNull('published_at')
-    //         ->where('published_at', '<=', now());
-    // }
-
-    // public function getFeaturedImageUrlAttribute(): ?string
-    // {
-    //     if (!$this->featured_image) {
-    //         return null;
-    //     }
-
-    //     return Storage::url($this->featured_image);
-
-    //     // return asset('storage/app/public/' . $this->featured_image);
-    // }
-    
 }

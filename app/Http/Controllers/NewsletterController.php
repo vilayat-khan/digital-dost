@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\NewsletterWelcomeMail;
 use App\Models\NewsletterSubscriber;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -35,6 +36,8 @@ class NewsletterController extends Controller
 
             Mail::to($subscriber->email)->send(new NewsletterWelcomeMail($subscriber));
 
+            Log::info('Newsletter resubscription', ['email' => $subscriber->email]);
+
             return back()->with('newsletter_success', 'Welcome back. You are subscribed again.');
         }
 
@@ -47,6 +50,8 @@ class NewsletterController extends Controller
 
         Mail::to($subscriber->email)->send(new NewsletterWelcomeMail($subscriber));
 
+        Log::info('Newsletter subscription', ['email' => $subscriber->email]);
+
         return back()->with('newsletter_success', 'Thanks for subscribing.');
     }
 
@@ -58,6 +63,8 @@ class NewsletterController extends Controller
             'status' => 'unsubscribed',
             'unsubscribed_at' => now(),
         ]);
+
+        Log::info('Newsletter unsubscribe', ['email' => $subscriber->email]);
 
         return view('newsletter-unsubscribed', compact('subscriber'));
     }

@@ -911,13 +911,31 @@
             color: var(--color-text);
         }
 
-        .article-prose p:first-of-type::first-letter {
+        /* .article-prose p:first-of-type::first-letter {
             float: left;
             padding-right: .08em;
             color: var(--color-primary);
             font-size: 3.3em;
             font-weight: 900;
             line-height: .85;
+        } */
+        
+        .article-prose > p:first-of-type::first-letter {
+            float: left;
+            padding-right: .08em;
+            color: var(--color-primary);
+            font-size: 3.3em;
+            font-weight: 900;
+            line-height: .85;
+        }
+
+        .article-prose li p::first-letter {
+            float: none;
+            color: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            line-height: inherit;
+            padding-right: 0;
         }
 
         .article-prose a {

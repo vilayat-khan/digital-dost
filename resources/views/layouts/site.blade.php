@@ -13,8 +13,8 @@
     @endphp
 
     <title>{{ $defaultTitle }}</title>
-    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('media/favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('media/favicon.png') }}">
     <meta name="description" content="{{ $defaultDescription }}">
     <meta name="robots" content="@yield('robots', 'index,follow')">
 
@@ -45,7 +45,7 @@
         "url": "{{ url('/') }}",
         "logo": {
             "@type": "ImageObject",
-            "url": "{{ asset('favicon.ico') }}"
+            "url": "{{ asset('media/favicon.png') }}"
         }
     }
     </script>

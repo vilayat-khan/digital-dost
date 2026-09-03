@@ -1023,6 +1023,23 @@
             color: var(--color-success-text);
         }
 
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            min-width: 0;
+            flex: 1 1 auto;
+            color: var(--color-text);
+        }
+
+        .brand-logo {
+            display: block;
+            width: auto;
+            height: 40px;
+            max-width: 180px;
+            object-fit: contain;
+            background: transparent;
+        }
+
         footer {
             width: 100%;
             margin-top: auto;

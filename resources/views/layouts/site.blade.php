@@ -1148,6 +1148,15 @@
                 height: 32px;
                 max-width: 140px;
             }
+            .share-btn {
+                width: 34px;
+                height: 34px;
+            }
+
+            .share-btn svg {
+                width: 15px;
+                height: 15px;
+            }
         }
     </style>
 </head>

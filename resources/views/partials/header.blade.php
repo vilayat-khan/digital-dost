@@ -1,9 +1,21 @@
 <header class="site-header">
     <div class="container header-shell">
         <div class="header-top">
-            <a href="{{ url('/') }}" class="brand" aria-label="Digital Dost home">
+            <!-- <a href="{{ url('/') }}" class="brand" aria-label="Digital Dost home">
                 <span class="brand-mark">DD</span>
                 <span class="brand-text">Digital Dost</span>
+            </a> -->
+
+            <a href="{{ url('/') }}" class="brand" aria-label="Digital Dost home">
+                <img
+                    src="{{ asset('images/digital_dost_logo.png') }}"
+                    alt="Digital Dost"
+                    width="160"
+                    height="40"
+                    loading="eager"
+                    decoding="async"
+                    class="brand-logo"
+                >
             </a>
 
             <nav class="main-nav" aria-label="Primary navigation">

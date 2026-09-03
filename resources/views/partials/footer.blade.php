@@ -24,9 +24,9 @@
             <div>
                 <h4 style="margin-bottom:10px; font-size:.95rem;">Follow</h4>
                 <div style="display:grid; gap:8px;">
-                    <a href="#" target="_blank" rel="noopener noreferrer">YouTube</a>
-                    <a href="#" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-                    <a href="#" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    <a href="https://www.youtube.com/@HeyDigitalDost" target="_blank" rel="noopener noreferrer">YouTube</a>
+                    <a href="https://whatsapp.com/channel/0029Vb8S7jRGU3BH4gF7GE3u" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                    <a href="https://instagram.com/digitaldost.hq" target="_blank" rel="noopener noreferrer">Instagram</a>
                 </div>
             </div>
 

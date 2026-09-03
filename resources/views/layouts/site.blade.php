@@ -1145,7 +1145,7 @@
 
         @media (max-width: 640px) {
             .brand-logo {
-                height: 32px;
+                height: 35px;
                 max-width: 140px;
             }
             .share-btn {

@@ -7,7 +7,7 @@
                     <span>Digital Dost</span>
                 </div>
                 <p style="color:var(--color-text-muted); font-size:.95rem;">
-                    Tech news, reviews, buying guides, AI aur simple Hinglish explainers.
+                    Tech news, reviews, buying guides, AI aur simple English explainers.
                 </p>
             </div>
 

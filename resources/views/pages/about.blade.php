@@ -3,7 +3,7 @@
 @php
     $canonicalUrl = route('about');
     $seoTitle = 'About Us — Digital Dost';
-    $seoDescription = 'Learn about Digital Dost, our mission, and how we cover tech news, reviews, explainers, and buying guides in simple Hinglish.';
+    $seoDescription = 'Learn about Digital Dost, our mission, and how we cover tech news, reviews, explainers, and buying guides in simple English.';
     $organizationId = url('/') . '#organization';
     $websiteId = url('/') . '#website';
 @endphp

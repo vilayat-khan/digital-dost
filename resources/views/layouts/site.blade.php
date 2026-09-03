@@ -1142,6 +1142,13 @@
                 padding: 0;
             }
         }
+
+        @media (max-width: 640px) {
+            .brand-logo {
+                height: 32px;
+                max-width: 140px;
+            }
+        }
     </style>
 </head>
 <body>
